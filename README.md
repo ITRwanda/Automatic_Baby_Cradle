@@ -1,0 +1,2 @@
+# Automatic_Baby_Cradle
+Academic project forAutomated_Baby_Cradle_with_Cry_Detection_and_Remote_Monitoring_Using_Internet_of_Things__IoT_-
