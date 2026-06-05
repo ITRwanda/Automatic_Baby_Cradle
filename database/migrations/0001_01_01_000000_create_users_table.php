@@ -17,8 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'family_parent', 'family_member']);
+            $table->unsignedBigInteger('family_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('family_id')->references('id')->on('families')->onDelete('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
