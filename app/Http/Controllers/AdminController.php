@@ -17,8 +17,13 @@ class AdminController extends Controller
     {
         $families = Family::with('members', 'devices')->get();
         $devices = Device::all();
-        return view('admin.dashboard', compact('families', 'devices'));
+        $users = User::all();
+        $reports = Device::with('family')->get(); // or your actual Report model
+
+        return view('admin.dashboard', compact('families', 'devices', 'users', 'reports'));
     }
+
+
 
     /**
      * Register a new device with unique token
@@ -35,6 +40,17 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Device registered with token: ' . $device->device_token);
+    }
+    public function families()
+    {
+        $families = Family::with('members')->get();
+        return view('admin.families', compact('families'));
+    }
+
+    public function devices()
+    {
+        $devices = Device::all();
+        return view('admin.devices', compact('devices'));
     }
 
     /**

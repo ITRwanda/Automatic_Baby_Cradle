@@ -31,13 +31,13 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            $role = Auth::user()->role;
+            $roleName = Auth::user()->role->name; // use relationship
 
-            if ($role === 'admin') {
+            if ($roleName === 'admin') {
                 return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
-            } elseif ($role === 'family_parent') {
+            } elseif ($roleName === 'family_parent') {
                 return redirect()->route('family.dashboard')->with('success', 'Welcome Family Parent!');
-            } elseif ($role === 'family_member') {
+            } elseif ($roleName === 'family_member') {
                 return redirect()->route('member.dashboard')->with('success', 'Welcome Family Member!');
             }
         }
