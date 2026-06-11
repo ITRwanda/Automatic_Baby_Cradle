@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('families', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('family_name');
-            $table->unsignedBigInteger('parent_id');
+            $table->string('name')->unique();
+            $table->string('description')->nullable();
             $table->timestamps();
-
-            $table->foreign('parent_id')->references('id')->on('users')->onDelete('cascade');
         });
-
     }
 
     /**
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('families');
+        Schema::dropIfExists('roles');
     }
 };
