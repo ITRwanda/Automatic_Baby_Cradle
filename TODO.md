@@ -1,7 +1,11 @@
-- [x] Fix middleware alias mapping in app/Http/Kernel.php (fully-qualify admin/family_parent/family_member)
-- [x] Run php artisan route:clear
-- [x] Run php artisan config:clear
-- [ ] Re-test login and protected admin/family routes (pending browser/auth test)
+# TODO
 
-
+- [x] Inspect existing admin reports (routes/controller/views).
+- [x] Add `admin.megaReports` route.
+- [x] Add `AdminController::megaReports()` to query device activities with device+family eager loading and apply filters.
+- [x] Add missing relationships in `DeviceActivity` model.
+- [ ] Ensure DB schema supports `device_activities.device_id`, `event_type`, `payload`.
+- [ ] Fix/avoid migration duplication: one migration already created `device_activities` table; the added migration should only add columns.
+- [ ] Run migrations cleanly (or manually verify columns exist).
+- [ ] Validate `/admin/mega/reports` loads and displays incident rows with family + device info.
 

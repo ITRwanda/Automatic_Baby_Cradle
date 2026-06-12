@@ -1,11 +1,86 @@
+/* Import Tailwind first */
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+/* Then import Bootstrap */
+@import "bootstrap/dist/css/bootstrap.min.css";
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* Your custom styles go below */
+body {
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* Sidebar styles */
+.sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #006633 0%, #004d26 100%);
+    color: #fff;
+}
+.sidebar .nav-link {
+    color: #dfe6e9;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: #45B972;
+    color: #fff;
+}
+.sidebar .brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/*
+  Admin dashboard uses these gradient utility classes:
+  bg-gradient-primary / success / info / warning.
+  They were not defined by Tailwind/Bootstrap in this project,
+  making the card header area appear blank/invisible.
+*/
+.bg-gradient-primary {
+    /* professional blue */
+    background: linear-gradient(135deg, #0b5ed7 0%, #4aa3ff 100%) !important;
+}
+
+.bg-gradient-success {
+    /* professional green */
+    background: linear-gradient(135deg, #198754 0%, #34d399 100%) !important;
+}
+
+.bg-gradient-info {
+    /* professional cyan */
+    background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%) !important;
+}
+
+.bg-gradient-warning {
+    /* professional amber */
+    background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%) !important;
+}
+
+/* Sidebar uses "active" class; improve colors to be more professional */
+.sidebar .nav-link {
+    background: transparent;
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+    background-color: #2dd4bf; /* teal */
+    color: #ffffff;
+}
+
+/* Ensure logout button matches style */
+.sidebar .text-danger {
+    color: #ef4444 !important;
+}
+
+/* Ensure warning text still reads well (your dashboard uses text-dark) */
+
+.bg-gradient-warning.text-dark,
+.bg-gradient-warning * {
+    color: #111827;
+}
+

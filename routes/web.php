@@ -9,11 +9,17 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Authentication routes (Laravel Breeze/Jetstream handles login/register)
-// Authentication routes
+// Authentication routes (custom auth for this project)
+use App\Http\Controllers\Auth\RegisterController;
+
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Registration routes
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+
 
 // Password reset routes
 Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -27,8 +33,29 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
     Route::get('/devices', [AdminController::class, 'devices'])->name('admin.devices');
     Route::post('/device/register', [AdminController::class, 'registerDevice'])->name('admin.registerDevice');
     Route::post('/device/assign', [AdminController::class, 'assignDevice'])->name('admin.assignDevice');
+
+    // Device management (admin)
+    Route::post('/device/update/{device_id}', [AdminController::class, 'updateDevice'])->name('admin.updateDevice');
+    Route::post('/device/delete/{device_id}', [AdminController::class, 'deleteDevice'])->name('admin.deleteDevice');
+
+    // Family management (admin)
+    Route::post('/family/update/{family_id}', [AdminController::class, 'updateFamily'])->name('admin.updateFamily');
+    Route::post('/family/delete/{family_id}', [AdminController::class, 'deleteFamily'])->name('admin.deleteFamily');
+
     Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
+
+    // New reports
+    Route::get('/device/reports', [AdminController::class, 'deviceReports'])->name('admin.deviceReports');
+    Route::get('/family/reports', [AdminController::class, 'familyReports'])->name('admin.familyReports');
+
+    // Mega / general incident report
+    Route::get('/mega/reports', [AdminController::class, 'megaReports'])->name('admin.megaReports');
+
+    // Device unassign (unsign)
+    Route::post('/device/unassign', [AdminController::class, 'unassignDevice'])->name('admin.unassignDevice');
 });
+
+
 
 
 // Family Parent routes

@@ -30,19 +30,23 @@ class FamilyController extends Controller
         $request->validate([
             'name'  => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'password' => 'nullable|string|min:6',
         ]);
 
         $family = Auth::user()->family;
 
+        $memberRoleId = \App\Models\Role::where('name', 'family_member')->value('id');
+
         User::create([
             'name'      => $request->name,
             'email'     => $request->email,
-            'password'  => bcrypt('password'), // default password, change later
-            'role_id'   => 3, // assuming 3 = family_member
-            'family_id' => $family->id,
+            'password'  => bcrypt($request->input('password') ?: 'password123'),
+            'role_id'   => $memberRoleId,
+            'family_id' => $family?->id,
         ]);
 
         return redirect()->back()->with('success', 'Family member added successfully');
+
     }
 
     /**
