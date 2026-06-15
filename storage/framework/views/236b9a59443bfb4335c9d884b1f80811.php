@@ -50,7 +50,7 @@
                     <?php elseif(auth()->user()->role && auth()->user()->role->name === 'family_parent'): ?>
                         <li><a href="<?php echo e(route('family.dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('family.dashboard') ? 'active' : ''); ?>">Dashboard</a></li>
                         <li><a href="<?php echo e(route('family.addMember')); ?>" class="nav-link">Members</a></li>
-                        <li><a href="<?php echo e(route('family.assignRole')); ?>" class="nav-link">Roles</a></li>
+
                         <li><a href="<?php echo e(route('family.reports')); ?>" class="nav-link <?php echo e(request()->routeIs('family.reports') ? 'active' : ''); ?>">Reports</a></li>
                     <?php elseif(auth()->user()->role && auth()->user()->role->name === 'family_member'): ?>
                         <li><a href="<?php echo e(route('member.dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('member.dashboard') ? 'active' : ''); ?>">Dashboard</a></li>

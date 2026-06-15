@@ -310,16 +310,30 @@
                                                                                     Modify
                                                                                 </button>
 
-                                                                                
-                                                                                <form
-                                                                                    method="POST"
-                                                                                    action="<?php echo e(route('admin.unassignDevice')); ?>"
-                                                                                    onsubmit="return confirm('Unassign device "<?php echo e(addslashes($device->device_name)); ?>" from this family?')"
-                                                                                >
-                                                                                    <?php echo csrf_field(); ?>
-                                                                                    <input type="hidden" name="device_id" value="<?php echo e($device->id); ?>">
-                                                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Unassign</button>
-                                                                                </form>
+                                                                                    
+                                                                                    <form
+                                                                                        method="POST"
+                                                                                        action="<?php echo e(route('admin.unassignDevice')); ?>"
+                                                                                        onsubmit="return confirm('Unassign device "<?php echo e(addslashes($device->device_name)); ?>" from this family?')"
+                                                                                    >
+                                                                                        <?php echo csrf_field(); ?>
+                                                                                        <input type="hidden" name="device_id" value="<?php echo e($device->id); ?>">
+                                                                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Unassign (family)</button>
+                                                                                    </form>
+
+                                                                                    
+                                                                                    <form
+                                                                                        method="POST"
+                                                                                        action="<?php echo e(route('admin.unassignDeviceFromFamilyParent')); ?>"
+                                                                                        onsubmit="return confirm('Unassign device "<?php echo e(addslashes($device->device_name)); ?>" from family parent?')"
+                                                                                    >
+                                                                                        <?php echo csrf_field(); ?>
+                                                                                        <input type="hidden" name="device_id" value="<?php echo e($device->id); ?>">
+                                                                                        <input type="hidden" name="family_id" value="<?php echo e($family->id); ?>">
+                                                                                    <button type="submit" class="btn btn-sm btn-outline-warning">Unassign (parent)</button>
+
+                                                                                    </form>
+
 
                                                                                 
                                                                                 <form

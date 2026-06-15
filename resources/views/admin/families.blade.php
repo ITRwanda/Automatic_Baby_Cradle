@@ -307,16 +307,30 @@
                                                                                     Modify
                                                                                 </button>
 
-                                                                                {{-- Unassign device --}}
-                                                                                <form
-                                                                                    method="POST"
-                                                                                    action="{{ route('admin.unassignDevice') }}"
-                                                                                    onsubmit="return confirm('Unassign device "{{ addslashes($device->device_name) }}" from this family?')"
-                                                                                >
-                                                                                    @csrf
-                                                                                    <input type="hidden" name="device_id" value="{{ $device->id }}">
-                                                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Unassign</button>
-                                                                                </form>
+                                                                                    {{-- Unassign device from family_id (existing) --}}
+                                                                                    <form
+                                                                                        method="POST"
+                                                                                        action="{{ route('admin.unassignDevice') }}"
+                                                                                        onsubmit="return confirm('Unassign device "{{ addslashes($device->device_name) }}" from this family?')"
+                                                                                    >
+                                                                                        @csrf
+                                                                                        <input type="hidden" name="device_id" value="{{ $device->id }}">
+                                                                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Unassign (family)</button>
+                                                                                    </form>
+
+                                                                                    {{-- Unassign device from family_parent user_id (sync with family-parent side) --}}
+                                                                                    <form
+                                                                                        method="POST"
+                                                                                        action="{{ route('admin.unassignDeviceFromFamilyParent') }}"
+                                                                                        onsubmit="return confirm('Unassign device "{{ addslashes($device->device_name) }}" from family parent?')"
+                                                                                    >
+                                                                                        @csrf
+                                                                                        <input type="hidden" name="device_id" value="{{ $device->id }}">
+                                                                                        <input type="hidden" name="family_id" value="{{ $family->id }}">
+                                                                                    <button type="submit" class="btn btn-sm btn-outline-warning">Unassign (parent)</button>
+
+                                                                                    </form>
+
 
                                                                                 {{-- Delete device --}}
                                                                                 <form

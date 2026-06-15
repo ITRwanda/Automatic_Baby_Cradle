@@ -53,7 +53,12 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
 
     // Device unassign (unsign)
     Route::post('/device/unassign', [AdminController::class, 'unassignDevice'])->name('admin.unassignDevice');
+
+    // Admin: assign/unassign device to a family_parent user (device.user_id)
+    Route::post('/device/assign-to-family-parent', [AdminController::class, 'assignDeviceToFamilyParent'])->name('admin.assignDeviceToFamilyParent');
+    Route::post('/device/unassign-from-family-parent', [AdminController::class, 'unassignDeviceFromFamilyParent'])->name('admin.unassignDeviceFromFamilyParent');
 });
+
 
 
 
@@ -61,8 +66,21 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
 // Family Parent routes
 Route::prefix('family')->middleware(['auth','family_parent'])->group(function () {
     Route::get('/dashboard', [FamilyController::class, 'dashboard'])->name('family.dashboard');
+    Route::get('/members', [FamilyController::class, 'members'])->name('family.members');
+    Route::get('/roles', [FamilyController::class, 'roles'])->name('family.roles');
+    Route::post('/device/assign-to-member', [FamilyController::class, 'assignDeviceToMember'])->name('family.assignDeviceToMember');
+    Route::post('/device/unassign-from-member', [FamilyController::class, 'unassignDeviceFromMember'])->name('family.unassignDeviceFromMember');
+
+
+
+    Route::get('/member/add', function () {
+        // Family parent can access add-member form via members page.
+        return redirect()->route('family.members');
+    })->name('family.memberAddForm');
+
     Route::post('/member/add', [FamilyController::class, 'addMember'])->name('family.addMember');
     Route::post('/member/role', [FamilyController::class, 'assignRole'])->name('family.assignRole');
+
     Route::get('/devices', [FamilyController::class, 'devices'])->name('family.devices');
     Route::get('/reports', [FamilyController::class, 'reports'])->name('family.reports');
 });

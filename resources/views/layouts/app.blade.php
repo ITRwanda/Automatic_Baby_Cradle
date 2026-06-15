@@ -50,7 +50,7 @@
                     @elseif(auth()->user()->role && auth()->user()->role->name === 'family_parent')
                         <li><a href="{{ route('family.dashboard') }}" class="nav-link {{ request()->routeIs('family.dashboard') ? 'active' : '' }}">Dashboard</a></li>
                         <li><a href="{{ route('family.addMember') }}" class="nav-link">Members</a></li>
-                        <li><a href="{{ route('family.assignRole') }}" class="nav-link">Roles</a></li>
+
                         <li><a href="{{ route('family.reports') }}" class="nav-link {{ request()->routeIs('family.reports') ? 'active' : '' }}">Reports</a></li>
                     @elseif(auth()->user()->role && auth()->user()->role->name === 'family_member')
                         <li><a href="{{ route('member.dashboard') }}" class="nav-link {{ request()->routeIs('member.dashboard') ? 'active' : '' }}">Dashboard</a></li>

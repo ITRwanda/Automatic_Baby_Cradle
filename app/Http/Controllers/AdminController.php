@@ -170,10 +170,72 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Device unassigned successfully');
     }
 
+    /**
+     * Admin: assign device to the family_parent user (stored in devices.user_id)
+     */
+    public function assignDeviceToFamilyParent(Request $request)
+    {
+
+        $request->validate([
+            'device_id' => 'required|exists:devices,id',
+            'family_id' => 'required|exists:families,id',
+        ]);
+
+        $family = Family::with('parent')->findOrFail($request->family_id);
+        $device = Device::findOrFail($request->device_id);
+
+        // Ensure device belongs to the family we are assigning.
+        if ((int)$device->family_id !== (int)$family->id) {
+            return redirect()->back()->with('error', 'Device does not belong to this family.');
+        }
+
+        $parent = $family->parent;
+        if (!$parent) {
+            return redirect()->back()->with('error', 'Family parent not found.');
+        }
+
+        // Assigning to family_parent means the device is assigned to this family.
+        // Keep member assignment as-is (or clear if you want a fresh assignment flow).
+        $device->family_id = $family->id;
+        $device->save();
+
+
+        return redirect()->back()->with('success', 'Device assigned successfully');
+
+    }
+
+    /**
+     * Admin: unassign device from family_parent (stored in devices.user_id)
+     */
+    public function unassignDeviceFromFamilyParent(Request $request)
+    {
+        $request->validate([
+            'device_id' => 'required|exists:devices,id',
+            'family_id' => 'required|exists:families,id',
+        ]);
+
+        $family = Family::with('parent')->findOrFail($request->family_id);
+        $device = Device::findOrFail($request->device_id);
+
+        if ((int)$device->family_id !== (int)$family->id) {
+            return redirect()->back()->with('error', 'Device does not belong to this family.');
+        }
+
+        // Unassigning from family_parent should also unassign the member.
+        $device->family_id = null;
+        $device->user_id = null;
+        $device->save();
+
+
+        return redirect()->back()->with('success', 'Device unassigned successfully');
+
+    }
+
 
     /**
      * Legacy: View reports across all devices
      */
+
     public function reports()
     {
         $devices = Device::with('family')->get();

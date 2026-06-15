@@ -8,7 +8,7 @@
     </div>
 
     <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-warning text-dark fw-semibold">Devices</div>
+        <div class="card-header bg-warning text-dark fw-semibold">Devices assigned to this family</div>
         <div class="card-body">
             @if(($devices ?? collect())->count() === 0)
                 <div class="alert alert-warning mb-0">No devices assigned to this family.</div>
@@ -19,7 +19,6 @@
                             <tr>
                                 <th>Device</th>
                                 <th>Token</th>
-                                <th class="text-end">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,20 +26,32 @@
                                 <tr>
                                     <td class="fw-semibold">{{ $device->device_name }}</td>
                                     <td><span class="badge bg-secondary">{{ $device->device_token }}</span></td>
-                                    <td class="text-end">
-                                        {{-- Placeholder actions; real backend not implemented yet --}}
-                                        <div class="d-inline-flex gap-2">
-                                            <a href="#" class="btn btn-sm btn-outline-primary" aria-disabled="true">Assign</a>
-                                            <a href="#" class="btn btn-sm btn-outline-danger" aria-disabled="true">Drop</a>
-                                        </div>
+                                    <td>
+                                        @if($device->user_id)
+                                            @php($assignedMember = \App\Models\User::find($device->user_id))
+                                            <span class="badge bg-success">Assigned: {{ $assignedMember?->name ?? 'Unknown' }}</span>
+                                        @else
+                                            <span class="text-muted">Unassigned</span>
+                                        @endif
                                     </td>
+            <td class="text-end">
+                                        <form method="POST" action="{{ route('family.unassignDeviceFromMember') }}" onsubmit="return confirm('Unassign this device from the member?');">
+                                            @csrf
+                                            <input type="hidden" name="device_id" value="{{ $device->id }}">
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Unassign</button>
+                                        </form>
+                                    </td>
+
                                 </tr>
                             @endforeach
+
+
                         </tbody>
                     </table>
                 </div>
             @endif
         </div>
+
     </div>
 </div>
 @endsection
