@@ -48,12 +48,16 @@ class AdminController extends Controller
 
     public function families()
     {
+        // Ensure we return *all* families even if relationships are empty.
         $families = Family::with(['members', 'devices', 'parent'])->get();
         $parents = User::whereHas('role', fn($q) => $q->where('name', 'family_parent'))->get();
+
+        // Must include NULL-able family_id so the UI can calculate unassigned devices.
         $allDevices = Device::select(['id', 'device_name', 'device_token', 'family_id'])->get();
 
         return view('admin.families', compact('families', 'parents', 'allDevices'));
     }
+
 
     public function devices()
     {
@@ -68,16 +72,43 @@ class AdminController extends Controller
     {
         $request->validate([
             'family_name' => 'required|string|max:255',
-            'parent_id' => 'required|exists:users,id',
+            'parent_name' => 'required|string|max:255',
+            'parent_email' => 'required|email|unique:users,email',
+            'parent_password' => 'required|string|min:6|confirmed',
+        ], [
+            'parent_password.confirmed' => 'The family parent password confirmation does not match.',
         ]);
 
-        Family::create([
-            'family_name' => $request->family_name,
-            'parent_id' => $request->parent_id,
-        ]);
+        $familyParentRoleId = \App\Models\Role::where('name', 'family_parent')->value('id');
+        if (!$familyParentRoleId) {
+            return redirect()->back()->with('error', 'Role "family_parent" not found.');
+        }
 
-        return redirect()->back()->with('success', 'Family created successfully');
+        try {
+            \DB::transaction(function () use ($request, $familyParentRoleId) {
+                $parent = \App\Models\User::create([
+                    'name' => $request->parent_name,
+                    'email' => $request->parent_email,
+                    'password' => bcrypt($request->parent_password),
+                    'role_id' => $familyParentRoleId,
+                ]);
+
+                \App\Models\Family::create([
+                    'family_name' => $request->family_name,
+                    'parent_id' => $parent->id,
+                ]);
+            });
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->back()->with('error', 'Family creation DB failed: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Family creation failed: ' . $e->getMessage());
+        }
+
+
+        return redirect()->back()->with('success', 'Family created successfully. Family parent account created.');
     }
+
+
 
     /**
      * Update an existing family
@@ -86,13 +117,42 @@ class AdminController extends Controller
     {
         $request->validate([
             'family_name' => 'required|string|max:255',
-            'parent_id' => 'required|exists:users,id',
+
+            // Parent account editable fields (optional where password is optional)
+            'parent_name' => 'nullable|string|max:255',
+            'parent_email' => 'nullable|email|max:255',
+            'parent_password' => 'nullable|string|min:6|confirmed',
         ]);
 
         $family = Family::findOrFail($family_id);
+
+        // IMPORTANT: Admin cannot change the family parent.
+        // Only family_name and parent account details are editable.
         $family->family_name = $request->family_name;
-        $family->parent_id = $request->parent_id;
         $family->save();
+
+        $parent = \App\Models\User::findOrFail($family->parent_id);
+
+
+        if ($request->filled('parent_name')) {
+            $parent->name = $request->parent_name;
+        }
+
+        if ($request->filled('parent_email')) {
+            // Prevent changing to an email used by another user.
+            $email = $request->parent_email;
+            $emailOwnerId = \App\Models\User::where('email', $email)->where('id', '!=', $parent->id)->value('id');
+            if ($emailOwnerId) {
+                return redirect()->back()->with('error', 'Parent email is already in use by another account.');
+            }
+            $parent->email = $email;
+        }
+
+        if ($request->filled('parent_password')) {
+            $parent->password = bcrypt($request->parent_password);
+        }
+
+        $parent->save();
 
         return redirect()->back()->with('success', 'Family updated successfully');
     }
@@ -226,8 +286,8 @@ class AdminController extends Controller
         $device->user_id = null;
         $device->save();
 
-
         return redirect()->back()->with('success', 'Device unassigned successfully');
+
 
     }
 

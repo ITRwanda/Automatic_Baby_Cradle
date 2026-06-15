@@ -1,58 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h2 class="mb-0 fw-bold">Family Reports</h2>
-        <span class="badge bg-info">Assigned Devices</span>
+<div class="container-fluid mt-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <h2 class="mb-0 fw-bold">Family Reports (Incidents)</h2>
+        <span class="text-muted small">Mega / general incident report restricted to your family devices.</span>
     </div>
 
     <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-warning text-dark fw-semibold">Devices assigned to this family</div>
+        <div class="card-header bg-secondary text-white fw-semibold">Filters</div>
         <div class="card-body">
-            @if(($devices ?? collect())->count() === 0)
-                <div class="alert alert-warning mb-0">No devices assigned to this family.</div>
+            <form method="GET" action="{{ route('family.reports') }}" class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label fw-semibold">Device search</label>
+                    <input type="text" name="q" class="form-control" placeholder="Device name or token" value="{{ request('q') }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">From</label>
+                    <input type="date" name="from" class="form-control" value="{{ request('from') }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">To</label>
+                    <input type="date" name="to" class="form-control" value="{{ request('to') }}">
+                </div>
+
+                <div class="col-md-12 d-flex gap-2 justify-content-end">
+                    <button class="btn btn-primary" type="submit">Apply</button>
+                    <a href="{{ route('family.reports') }}" class="btn btn-outline-secondary">Reset</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white fw-semibold">Incidents</div>
+        <div class="card-body">
+            @if(($activities ?? collect())->count() === 0)
+                <div class="alert alert-warning mb-0">No incident activities found.</div>
             @else
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Device</th>
-                                <th>Token</th>
-                            </tr>
+                    <table class="table table-striped align-middle">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Device</th>
+                            <th>Family</th>
+                            <th>Event</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach($devices as $device)
-                                <tr>
-                                    <td class="fw-semibold">{{ $device->device_name }}</td>
-                                    <td><span class="badge bg-secondary">{{ $device->device_token }}</span></td>
-                                    <td>
-                                        @if($device->user_id)
-                                            @php($assignedMember = \App\Models\User::find($device->user_id))
-                                            <span class="badge bg-success">Assigned: {{ $assignedMember?->name ?? 'Unknown' }}</span>
-                                        @else
-                                            <span class="text-muted">Unassigned</span>
-                                        @endif
-                                    </td>
-            <td class="text-end">
-                                        <form method="POST" action="{{ route('family.unassignDeviceFromMember') }}" onsubmit="return confirm('Unassign this device from the member?');">
-                                            @csrf
-                                            <input type="hidden" name="device_id" value="{{ $device->id }}">
-                                            <button class="btn btn-sm btn-outline-danger" type="submit">Unassign</button>
-                                        </form>
-                                    </td>
-
-                                </tr>
-                            @endforeach
-
-
+                        @foreach($activities as $activity)
+                            <tr>
+                                <td class="text-muted">{{ $activity->created_at?->format('Y-m-d H:i') }}</td>
+                                <td class="fw-semibold">{{ $activity->device->device_name ?? '—' }}</td>
+                                <td>{{ optional($activity->device->family)->family_name ?? 'Unassigned' }}</td>
+                                <td>
+                                    @if(!empty($activity->event_type))
+                                        <span class="badge bg-primary">{{ $activity->event_type }}</span>
+                                    @else
+                                        <span class="text-muted">Incident recorded</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
             @endif
         </div>
-
     </div>
 </div>
 @endsection
+
+
 

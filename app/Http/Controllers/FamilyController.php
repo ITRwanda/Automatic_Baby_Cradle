@@ -155,15 +155,45 @@ class FamilyController extends Controller
     }
 
     /**
-     * View family reports
+     * View family (parent/member) incident reports.
+     * Must match admin mega report but restricted to this family's devices.
      */
-    public function reports()
+    public function reports(Request $request)
     {
         $family = Auth::user()->family;
-        $devices = $family ? $family->devices : [];
+        if (!$family) {
+            return view('family.reports', ['activities' => collect(), 'devices' => collect()]);
+        }
 
-        return view('family.reports', compact('devices'));
+        $query = \App\Models\DeviceActivity::query()->with(['device.family']);
+
+        $query->whereHas('device', function ($q) use ($family) {
+            $q->where('family_id', $family->id);
+        });
+
+        $q = trim((string) $request->input('q'));
+        if ($q !== '') {
+            $query->whereHas('device', function ($sub) use ($q) {
+                $sub->where('device_name', 'LIKE', "%{$q}%")
+                    ->orWhere('device_token', 'LIKE', "%{$q}%");
+            });
+        }
+
+        $from = $request->input('from');
+        if (!empty($from)) {
+            $query->whereDate('created_at', '>=', $from);
+        }
+
+        $to = $request->input('to');
+        if (!empty($to)) {
+            $query->whereDate('created_at', '<=', $to);
+        }
+
+        $activities = $query->orderByDesc('created_at')->get();
+
+        return view('family.reports', compact('activities'));
     }
+
 
     /**
      * Unassign a device from a family member (set devices.user_id = null)
