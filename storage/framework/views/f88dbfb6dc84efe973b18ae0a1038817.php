@@ -1,102 +1,116 @@
 
 
 <?php $__env->startSection('content'); ?>
-<div class="container-fluid mt-4">
-    <h2 class="mb-4 fw-bold text-dark">Admin Dashboard</h2>
+<div class="container-fluid py-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+            <h2 class="mb-1 fw-bold" style="color:#0f172a;">Admin Console</h2>
+            <p class="text-muted mb-0">Brilliant overview of families, devices, and incidents.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="<?php echo e(route('admin.reports')); ?>" class="btn btn-outline-dark fw-semibold shadow-sm">Assign devices</a>
+            <a href="<?php echo e(route('admin.megaReports')); ?>" class="btn btn-dark fw-semibold shadow-sm">Mega report</a>
+        </div>
+    </div>
+
     <!-- Quick Stats -->
-<div class="row g-4">
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-primary text-white rounded">
-                <h6 class="text-uppercase fw-semibold">Total Families</h6>
-                <h2 class="fw-bold"><?php echo e($families_total); ?></h2>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-success text-white rounded">
-                <h6 class="text-uppercase fw-semibold">Total Devices</h6>
-                <h2 class="fw-bold"><?php echo e($devices_total); ?></h2>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-info text-white rounded">
-                <h6 class="text-uppercase fw-semibold">Total Users</h6>
-                <h2 class="fw-bold"><?php echo e($users_total); ?></h2>
-            </div>
-        </div>
-    </div>
-        <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-warning text-dark rounded">
-                <h6 class="text-uppercase fw-semibold">Reports</h6>
-                <h2 class="fw-bold"><?php echo e($reports_total); ?></h2>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-
-
-
-    <!-- Charts -->
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-primary text-white fw-semibold">Families Overview</div>
-                <div class="card-body">
-                    <canvas id="familiesChart"></canvas>
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #0b5ed7 0%, #4aa3ff 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Total Families</div>
+                    <div class="display-6 fw-bold"><?php echo e($families_total); ?></div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-success text-white fw-semibold">Devices Overview</div>
-                <div class="card-body">
-                    <canvas id="devicesChart"></canvas>
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #198754 0%, #34d399 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Total Devices</div>
+                    <div class="display-6 fw-bold"><?php echo e($devices_total); ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Total Users</div>
+                    <div class="display-6 fw-bold"><?php echo e($users_total); ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Reports</div>
+                    <div class="display-6 fw-bold"><?php echo e($reports_total); ?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-header" style="background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%); color:white; font-weight:700;">
+                    Families Overview
+                </div>
+                <div class="card-body" style="height:320px;">
+                    <canvas id="familiesChart" height="320"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-header" style="background: linear-gradient(135deg, #16a34a 0%, #22d3ee 100%); color:white; font-weight:700;">
+                    Devices Overview
+                </div>
+                <div class="card-body" style="height:320px;">
+                    <canvas id="devicesChart" height="320"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Detailed Table -->
-    <div class="card shadow-sm border-0 mt-4">
-        <div class="card-header bg-info text-white fw-semibold">Device Assignments</div>
+    <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+        <div class="card-header" style="background: linear-gradient(135deg, #0ea5e9 0%, #111827 100%); color:white; font-weight:700;">
+            Device Assignments
+        </div>
         <div class="card-body">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Device</th>
-                        <th>Token</th>
-                        <th>Assigned Family</th>
-                        <th>Members</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $__currentLoopData = $devices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $device): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
                         <tr>
-                            <td class="fw-semibold"><?php echo e($device->device_name); ?></td>
-                            <td><span class="badge bg-secondary"><?php echo e($device->device_token); ?></span></td>
-                            <td><?php echo e($device->family ? $device->family->family_name : 'Unassigned'); ?></td>
-                            <td>
-                                <?php if($device->family): ?>
-                                    <span class="badge bg-primary"><?php echo e($device->family->members->count()); ?> members</span>
-                                <?php else: ?>
-                                    <span class="text-muted">-</span>
-                                <?php endif; ?>
-                            </td>
+                            <th>Device</th>
+                            <th>Token</th>
+                            <th>Assigned Family</th>
+                            <th>Members</th>
                         </tr>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php $__currentLoopData = $devices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $device): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr>
+                                <td class="fw-semibold"><?php echo e($device->device_name); ?></td>
+                                <td><span class="badge" style="background: rgba(148,163,184,.25); color:#0f172a; border: 1px solid rgba(148,163,184,.35);"><?php echo e($device->device_token); ?></span></td>
+                                <td><?php echo e($device->family ? $device->family->family_name : 'Unassigned'); ?></td>
+                                <td>
+                                    <?php if($device->family): ?>
+                                        <span class="badge bg-primary" style="border-radius:999px;"><?php echo e($device->family->members->count()); ?> members</span>
+                                    <?php else: ?>
+                                        <span class="text-muted">-</span>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>

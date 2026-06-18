@@ -4,7 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FamilyController;
-use App\Http\Controllers\MemberController;
+
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -66,32 +66,67 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
 // Family Parent routes
 Route::prefix('family')->middleware(['auth','family_parent'])->group(function () {
     Route::get('/dashboard', [FamilyController::class, 'dashboard'])->name('family.dashboard');
-    Route::get('/members', [FamilyController::class, 'members'])->name('family.members');
+    Route::get('/caregivers', [FamilyController::class, 'caregivers'])->name('family.caregivers');
+    Route::get('/members', [FamilyController::class, 'members'])->name('family.members'); // backward compatible
     Route::get('/roles', [FamilyController::class, 'roles'])->name('family.roles');
-    Route::post('/device/assign-to-member', [FamilyController::class, 'assignDeviceToMember'])->name('family.assignDeviceToMember');
-    Route::post('/device/unassign-from-member', [FamilyController::class, 'unassignDeviceFromMember'])->name('family.unassignDeviceFromMember');
+    Route::post('/device/assign-to-caregiver', [FamilyController::class, 'assignDeviceToCaregiver'])->name('family.assignDeviceToCaregiver');
+    Route::post('/device/unassign-from-caregiver', [FamilyController::class, 'unassignDeviceFromCaregiver'])->name('family.unassignDeviceFromCaregiver');
 
 
 
+
+    Route::get('/caregiver/add', function () {
+        return redirect()->route('family.caregivers');
+    })->name('family.caregiverAddForm');
+
+    // Legacy compatibility: some templates might link to the old add path.
+    // Route should be GET (redirect) not POST.
     Route::get('/member/add', function () {
-        // Family parent can access add-member form via members page.
-        return redirect()->route('family.members');
+        return redirect()->route('family.caregivers');
     })->name('family.memberAddForm');
 
-    Route::post('/member/add', [FamilyController::class, 'addMember'])->name('family.addMember');
+
+
+    Route::post('/caregiver/add', [FamilyController::class, 'addCaregiver'])->name('family.addCaregiver');
     Route::post('/member/role', [FamilyController::class, 'assignRole'])->name('family.assignRole');
+    // Legacy compatibility: keep old POST target but route name expected by existing Blade is `family.addMember`.
+    Route::post('/member/add', [FamilyController::class, 'addCaregiver'])->name('family.addMember');
+
+
+
+
+
 
     Route::get('/devices', [FamilyController::class, 'devices'])->name('family.devices');
     Route::get('/reports', [FamilyController::class, 'reports'])->name('family.reports');
 });
 
 
-// Family Member routes
-Route::prefix('member')->middleware(['auth','family_member'])->group(function () {
-    Route::get('/dashboard', [MemberController::class, 'dashboard'])->name('member.dashboard');
-    Route::get('/reports', [MemberController::class, 'reports'])->name('member.reports');
-    Route::get('/notifications', [MemberController::class, 'notifications'])->name('member.notifications');
+// Caregiver routes
+Route::prefix('caregiver')->middleware(['auth','caregiver'])->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\CaregiverController::class, 'dashboard'])->name('caregiver.dashboard');
+    Route::get('/reports', [\App\Http\Controllers\CaregiverController::class, 'reports'])->name('caregiver.reports');
+    Route::get('/notifications', [\App\Http\Controllers\CaregiverController::class, 'notifications'])->name('caregiver.notifications');
+
+    // Device assignment should be done by family_parent only.
+    // Keep endpoints here but controller blocks caregiver actions.
+    Route::post('/assign-device-to-caregiver', [\App\Http\Controllers\CaregiverController::class, 'assignDevice'])->name('caregiver.assignDevice');
+    Route::post('/unassign-device-from-caregiver', [\App\Http\Controllers\CaregiverController::class, 'unassignDevice'])->name('caregiver.unassignDevice');
 });
+
+
+
+
+
+// Member routes (used by existing member.* links)
+// NOTE: this is distinct from `family.*` and `caregiver.*`
+Route::prefix('member')->middleware(['auth','family_member'])->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\CaregiverController::class, 'dashboard'])->name('member.dashboard');
+    Route::get('/reports', [\App\Http\Controllers\CaregiverController::class, 'reports'])->name('member.reports');
+    Route::get('/notifications', [\App\Http\Controllers\CaregiverController::class, 'notifications'])->name('member.notifications');
+});
+
+
 
 
 // Profile settings (shared)
@@ -101,4 +136,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::post('/profile/deactivate', [ProfileController::class, 'deactivate'])->name('profile.deactivate');
 });
+
 

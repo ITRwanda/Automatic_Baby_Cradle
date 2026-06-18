@@ -33,6 +33,10 @@ class LoginController extends Controller
 
             $roleName = Auth::user()->role->name; // use relationship
 
+            // Only redirect if role is recognized; otherwise show login error.
+            // This prevents false success followed by middleware/route issues.
+
+
             if ($roleName === 'admin') {
                 return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
             } elseif ($roleName === 'family_parent') {

@@ -49,14 +49,20 @@
 
                     <?php elseif(auth()->user()->role && auth()->user()->role->name === 'family_parent'): ?>
                         <li><a href="<?php echo e(route('family.dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('family.dashboard') ? 'active' : ''); ?>">Dashboard</a></li>
-                        <li><a href="<?php echo e(route('family.addMember')); ?>" class="nav-link">Members</a></li>
+                        <li><a href="<?php echo e(route('family.caregivers')); ?>" class="nav-link">Caregivers</a></li>
+
 
                         <li><a href="<?php echo e(route('family.reports')); ?>" class="nav-link <?php echo e(request()->routeIs('family.reports') ? 'active' : ''); ?>">Reports</a></li>
-                    <?php elseif(auth()->user()->role && auth()->user()->role->name === 'family_member'): ?>
-                        <li><a href="<?php echo e(route('member.dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('member.dashboard') ? 'active' : ''); ?>">Dashboard</a></li>
-                        <li><a href="<?php echo e(route('member.reports')); ?>" class="nav-link <?php echo e(request()->routeIs('member.reports') ? 'active' : ''); ?>">Reports</a></li>
-                        <li><a href="<?php echo e(route('member.notifications')); ?>" class="nav-link <?php echo e(request()->routeIs('member.notifications') ? 'active' : ''); ?>">Notifications</a></li>
+                    <?php elseif(auth()->user()->role && auth()->user()->role->name === 'caregiver'): ?>
+                        <li><a href="<?php echo e(route('caregiver.dashboard')); ?>" class="nav-link <?php echo e(request()->routeIs('caregiver.dashboard') ? 'active' : ''); ?>">Dashboard</a></li>
+                        <li><a href="<?php echo e(route('caregiver.reports')); ?>" class="nav-link <?php echo e(request()->routeIs('caregiver.reports') ? 'active' : ''); ?>">Reports</a></li>
+                        <li><a href="<?php echo e(route('caregiver.notifications')); ?>" class="nav-link <?php echo e(request()->routeIs('caregiver.notifications') ? 'active' : ''); ?>">Notifications</a></li>
+
+
                     <?php endif; ?>
+
+
+
 
                     <li><a href="<?php echo e(route('profile.settings')); ?>" class="nav-link <?php echo e(request()->routeIs('profile.settings') ? 'active' : ''); ?>">Profile</a></li>
                     <li>

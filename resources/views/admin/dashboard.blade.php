@@ -1,102 +1,116 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-4">
-    <h2 class="mb-4 fw-bold text-dark">Admin Dashboard</h2>
+<div class="container-fluid py-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+            <h2 class="mb-1 fw-bold" style="color:#0f172a;">Admin Console</h2>
+            <p class="text-muted mb-0">Brilliant overview of families, devices, and incidents.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ route('admin.reports') }}" class="btn btn-outline-dark fw-semibold shadow-sm">Assign devices</a>
+            <a href="{{ route('admin.megaReports') }}" class="btn btn-dark fw-semibold shadow-sm">Mega report</a>
+        </div>
+    </div>
+
     <!-- Quick Stats -->
-<div class="row g-4">
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-primary text-white rounded">
-                <h6 class="text-uppercase fw-semibold">Total Families</h6>
-                <h2 class="fw-bold">{{ $families_total }}</h2>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-success text-white rounded">
-                <h6 class="text-uppercase fw-semibold">Total Devices</h6>
-                <h2 class="fw-bold">{{ $devices_total }}</h2>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-info text-white rounded">
-                <h6 class="text-uppercase fw-semibold">Total Users</h6>
-                <h2 class="fw-bold">{{ $users_total }}</h2>
-            </div>
-        </div>
-    </div>
-        <div class="col-md-3">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center bg-gradient-warning text-dark rounded">
-                <h6 class="text-uppercase fw-semibold">Reports</h6>
-                <h2 class="fw-bold">{{ $reports_total }}</h2>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-
-
-
-    <!-- Charts -->
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-primary text-white fw-semibold">Families Overview</div>
-                <div class="card-body">
-                    <canvas id="familiesChart"></canvas>
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #0b5ed7 0%, #4aa3ff 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Total Families</div>
+                    <div class="display-6 fw-bold">{{ $families_total }}</div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-success text-white fw-semibold">Devices Overview</div>
-                <div class="card-body">
-                    <canvas id="devicesChart"></canvas>
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #198754 0%, #34d399 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Total Devices</div>
+                    <div class="display-6 fw-bold">{{ $devices_total }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Total Users</div>
+                    <div class="display-6 fw-bold">{{ $users_total }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-body text-center text-white" style="background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%);">
+                    <div class="small text-white-50 text-uppercase fw-semibold">Reports</div>
+                    <div class="display-6 fw-bold">{{ $reports_total }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-header" style="background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%); color:white; font-weight:700;">
+                    Families Overview
+                </div>
+                <div class="card-body" style="height:320px;">
+                    <canvas id="familiesChart" height="320"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+                <div class="card-header" style="background: linear-gradient(135deg, #16a34a 0%, #22d3ee 100%); color:white; font-weight:700;">
+                    Devices Overview
+                </div>
+                <div class="card-body" style="height:320px;">
+                    <canvas id="devicesChart" height="320"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Detailed Table -->
-    <div class="card shadow-sm border-0 mt-4">
-        <div class="card-header bg-info text-white fw-semibold">Device Assignments</div>
+    <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
+        <div class="card-header" style="background: linear-gradient(135deg, #0ea5e9 0%, #111827 100%); color:white; font-weight:700;">
+            Device Assignments
+        </div>
         <div class="card-body">
-            <table class="table table-hover align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Device</th>
-                        <th>Token</th>
-                        <th>Assigned Family</th>
-                        <th>Members</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($devices as $device)
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
                         <tr>
-                            <td class="fw-semibold">{{ $device->device_name }}</td>
-                            <td><span class="badge bg-secondary">{{ $device->device_token }}</span></td>
-                            <td>{{ $device->family ? $device->family->family_name : 'Unassigned' }}</td>
-                            <td>
-                                @if($device->family)
-                                    <span class="badge bg-primary">{{ $device->family->members->count() }} members</span>
-                                @else
-                                    <span class="text-muted">-</span>
-                                @endif
-                            </td>
+                            <th>Device</th>
+                            <th>Token</th>
+                            <th>Assigned Family</th>
+                            <th>Members</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($devices as $device)
+                            <tr>
+                                <td class="fw-semibold">{{ $device->device_name }}</td>
+                                <td><span class="badge" style="background: rgba(148,163,184,.25); color:#0f172a; border: 1px solid rgba(148,163,184,.35);">{{ $device->device_token }}</span></td>
+                                <td>{{ $device->family ? $device->family->family_name : 'Unassigned' }}</td>
+                                <td>
+                                    @if($device->family)
+                                        <span class="badge bg-primary" style="border-radius:999px;">{{ $device->family->members->count() }} members</span>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>

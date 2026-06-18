@@ -31,20 +31,36 @@ class FamilyController extends Controller
     /**
      * Add a new member to the family
      */
-    public function members()
+    public function caregivers()
     {
+
         $family = Auth::user()->family;
         $members = $family ? $family->members()->get() : collect();
         $devices = $family ? $family->devices()->get() : collect();
 
-        return view('family.members', compact('members', 'devices'));
+        // Keep variable names consistent with existing Blade(s)
+        return view('family.caregivers', compact('members', 'devices'));
+
     }
 
-    /**
-     * Assign a device to a family member.
-     */
-    public function assignDeviceToMember(Request $request)
+    // Backward-compatible alias (was member listing)
+    // NOTE: this method must not be duplicated; see bottom-of-file.
+    public function members()
     {
+        return $this->caregivers();
+    }
+
+
+
+
+
+
+    /**
+     * Assign a device to a family caregiver.
+     */
+    public function assignDeviceToCaregiver(Request $request)
+    {
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'device_id' => 'required|exists:devices,id',
@@ -86,10 +102,11 @@ class FamilyController extends Controller
     }
 
     /**
-     * Add a new member to the family
+     * Add a new caregiver to the family
      */
-    public function addMember(Request $request)
+    public function addCaregiver(Request $request)
     {
+
 
         $request->validate([
             'name'  => 'required|string|max:255',
@@ -103,7 +120,8 @@ class FamilyController extends Controller
         // Family parent can add family members using the add-member form.
         $maxFamilyMembers = 3;
 
-        $memberRoleId = \App\Models\Role::where('name', 'family_member')->value('id');
+        $memberRoleId = \App\Models\Role::where('name', 'caregiver')->value('id');
+
 
         $existingFamilyMembersCount = User::where('family_id', $family?->id)
             ->where('role_id', $memberRoleId)
@@ -198,8 +216,9 @@ class FamilyController extends Controller
     /**
      * Unassign a device from a family member (set devices.user_id = null)
      */
-    public function unassignDeviceFromMember(Request $request)
+    public function unassignDeviceFromCaregiver(Request $request)
     {
+
         $request->validate([
             'device_id' => 'required|exists:devices,id',
         ]);

@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class FamilyMemberMiddleware
 {
+    // Deprecated: member role has been replaced by caregiver.
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role && Auth::user()->role->name === 'family_member') {
-            return $next($request);
-        }
-
-        return redirect()->route('login')->with('error', 'Unauthorized access.');
+        return redirect()->route('login')->with('error', 'This route is no longer available.');
     }
 }
+
 

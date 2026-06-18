@@ -1,13 +1,34 @@
-# IoTBabyCradle TODO
+# TODO - IoTBabyCradle (Role restructuring: member -> caregiver)
 
-## Device assignment from Family Members page
-- [x] Update plan confirmed for per-member device ownership + reporting.
-- [ ] Create migration to ensure `devices.user_id` exists (and nullable + FK to users).
-- [ ] Update `app/Models/Device.php` relationship to `User` (assigned member).
-- [ ] Update `resources/views/family/members.blade.php` to persist device assignment per member (device select + submit to `family.assignDeviceToMember`).
-- [ ] Add/implement unassign per member flow (route + controller method) for `family.reports`.
-- [ ] Update `resources/views/family/reports.blade.php` to show member → device mapping + unassign per member.
-- [ ] Update `FamilyController::assignDeviceToMember` to clear `family_id`/`user_id` consistently only as needed (already sets both; keep validation).
-- [ ] Update `AdminController` assign/unassign-to-family-parent to also clear `devices.user_id` on unassign (consistency).
-- [ ] Manual test: verify dropdown appears and assignment persists across parent/member/admin.
+## Step 1: Update roles
+- [ ] Update `database/seeders/RoleSeeder.php` to seed `admin`, `family_parent`, `caregiver` only.
+
+## Step 2: Replace middleware
+- [ ] Remove/replace `app/Http/Middleware/FamilyMemberMiddleware.php` with `CaregiverMiddleware`.
+- [ ] Update `app/Http/Kernel.php` route middleware mapping.
+
+## Step 3: Update routes
+- [ ] Remove `/member` route group from `routes/web.php`.
+- [ ] Add `/caregiver` route group using new middleware and new controller.
+
+## Step 4: Controllers + views
+- [ ] Remove `app/Http/Controllers/MemberController.php`.
+- [ ] Add `app/Http/Controllers/CaregiverController.php` (dashboard/reports/notifications) using `caregiver.*` views.
+- [ ] Rename `resources/views/member/*` -> `resources/views/caregiver/*`.
+
+## Step 5: Family parent caregiver management
+- [ ] Update `app/Http/Controllers/FamilyController.php` to manage `caregivers` instead of `members`.
+- [ ] Update routes, method names, and role lookups from `family_member` to `caregiver`.
+- [ ] Rename `resources/views/family/members.blade.php` -> `resources/views/family/caregivers.blade.php`.
+
+## Step 6: Layout navigation
+- [ ] Update `resources/views/layouts/app.blade.php` to show caregiver navigation instead of member.
+
+## Step 7: Clean references
+- [ ] Update any remaining references to `family_member`, `member.*` routes, and `/member` URLs across the repo.
+
+## Step 8: Verification
+- [x] Run `php artisan route:list` to confirm routes.
+- [ ] Run a smoke test: login as each role and ensure correct access.
+
 

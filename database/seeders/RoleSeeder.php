@@ -12,7 +12,8 @@ class RoleSeeder extends Seeder
         DB::table('roles')->insert([
             ['name' => 'admin', 'description' => 'System administrator'],
             ['name' => 'family_parent', 'description' => 'Family parent'],
-            ['name' => 'family_member', 'description' => 'Family member'],
+            ['name' => 'caregiver', 'description' => 'Caregiver'],
+
         ]);
     }
 }
