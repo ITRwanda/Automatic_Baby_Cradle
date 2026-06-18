@@ -3,9 +3,8 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex align-items-center justify-content-between mb-3">
-<h2 class="mb-0 text-primary">Family Caregivers</h2>
+        <h2 class="mb-0 text-primary">Family Caregivers</h2>
         <a href="{{ route('family.dashboard') }}" class="btn btn-sm btn-outline-secondary">Back</a>
-
     </div>
 
     @if(session('success'))
@@ -17,7 +16,6 @@
 
     <div class="card shadow-sm">
         <div class="card-header bg-white fw-bold">Caregivers</div>
-
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0 align-middle">
@@ -31,17 +29,17 @@
                     </thead>
                     <tbody>
                         @forelse($members as $member)
+
                             <tr>
                                 <td class="fw-semibold">{{ $member->name }}</td>
                                 <td class="text-muted">{{ $member->email ?? '' }}</td>
                                 <td>
-                                    {{-- Show only role name (no raw object/json) --}}
                                     <span class="badge bg-info">
-                                        {{ is_string($member->role) ? $member->role : ($member->role->name ?? 'member') }}
+                                        {{ is_string($member->role) ? $member->role : ($member->role->name ?? 'caregiver') }}
                                     </span>
                                 </td>
                                 <td class="text-end">
-                                            <form method="POST" action="{{ route('family.assignDeviceToCaregiver') }}" class="d-inline-block" style="min-width: 280px;">
+            <form method="POST" action="{{ route('family.assignDeviceToCaregiver') }}" class="d-inline-block" style="min-width: 280px;">
 
                                         @csrf
                                         <input type="hidden" name="user_id" value="{{ $member->id }}">
@@ -52,8 +50,6 @@
                                                     @foreach($devices as $device)
                                                         <option value="{{ $device->id }}">{{ $device->device_name }}{{ $device->user_id ? ' (Assigned)' : '' }}</option>
                                                     @endforeach
-
-
                                                 </select>
                                             </div>
                                             <div class="col-auto">
@@ -63,15 +59,14 @@
                                     </form>
 
                                     <div class="mt-2 d-inline-flex gap-2">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary" aria-disabled="true" title="Edit member">Edit</a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger" aria-disabled="true" title="Delete member">Delete</a>
+                                        <a href="#" class="btn btn-sm btn-outline-secondary" aria-disabled="true" title="Edit caregiver">Edit</a>
+                                        <a href="#" class="btn btn-sm btn-outline-danger" aria-disabled="true" title="Delete caregiver">Delete</a>
                                     </div>
                                 </td>
                             </tr>
-
                         @empty
                             <tr>
-No family caregivers found.
+                                <td colspan="4" class="text-muted p-4 text-center">No family caregivers found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -80,11 +75,10 @@ No family caregivers found.
         </div>
     </div>
 
-<div class="card shadow-sm mt-4">
-        <div class="card-header bg-white fw-bold">Add Member</div>
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-white fw-bold">Add Caregiver</div>
         <div class="card-body">
             <form method="POST" action="{{ route('family.addCaregiver') }}">
-
                 @csrf
 
                 <div class="row">

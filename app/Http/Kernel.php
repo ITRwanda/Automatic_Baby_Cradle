@@ -49,8 +49,9 @@ class Kernel extends HttpKernel
 
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'family_parent' => \App\Http\Middleware\FamilyParentMiddleware::class,
-        'family_member' => \App\Http\Middleware\FamilyMemberMiddleware::class,
+        'caregiver' => \App\Http\Middleware\CaregiverMiddleware::class,
     ];
+
 
 
 }

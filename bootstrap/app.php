@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\CaregiverMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -14,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin'         => \App\Http\Middleware\AdminMiddleware::class,
             'family_parent' => \App\Http\Middleware\FamilyParentMiddleware::class,
-            'family_member' => \App\Http\Middleware\FamilyMemberMiddleware::class,
+            'caregiver' => CaregiverMiddleware::class,
         ]);
     })
 

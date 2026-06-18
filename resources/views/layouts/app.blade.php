@@ -49,14 +49,20 @@
 
                     @elseif(auth()->user()->role && auth()->user()->role->name === 'family_parent')
                         <li><a href="{{ route('family.dashboard') }}" class="nav-link {{ request()->routeIs('family.dashboard') ? 'active' : '' }}">Dashboard</a></li>
-                        <li><a href="{{ route('family.addMember') }}" class="nav-link">Members</a></li>
+                        <li><a href="{{ route('family.caregivers') }}" class="nav-link">Caregivers</a></li>
+
 
                         <li><a href="{{ route('family.reports') }}" class="nav-link {{ request()->routeIs('family.reports') ? 'active' : '' }}">Reports</a></li>
-                    @elseif(auth()->user()->role && auth()->user()->role->name === 'family_member')
-                        <li><a href="{{ route('member.dashboard') }}" class="nav-link {{ request()->routeIs('member.dashboard') ? 'active' : '' }}">Dashboard</a></li>
-                        <li><a href="{{ route('member.reports') }}" class="nav-link {{ request()->routeIs('member.reports') ? 'active' : '' }}">Reports</a></li>
-                        <li><a href="{{ route('member.notifications') }}" class="nav-link {{ request()->routeIs('member.notifications') ? 'active' : '' }}">Notifications</a></li>
+                    @elseif(auth()->user()->role && auth()->user()->role->name === 'caregiver')
+                        <li><a href="{{ route('caregiver.dashboard') }}" class="nav-link {{ request()->routeIs('caregiver.dashboard') ? 'active' : '' }}">Dashboard</a></li>
+                        <li><a href="{{ route('caregiver.reports') }}" class="nav-link {{ request()->routeIs('caregiver.reports') ? 'active' : '' }}">Reports</a></li>
+                        <li><a href="{{ route('caregiver.notifications') }}" class="nav-link {{ request()->routeIs('caregiver.notifications') ? 'active' : '' }}">Notifications</a></li>
+
+
                     @endif
+
+
+
 
                     <li><a href="{{ route('profile.settings') }}" class="nav-link {{ request()->routeIs('profile.settings') ? 'active' : '' }}">Profile</a></li>
                     <li>
