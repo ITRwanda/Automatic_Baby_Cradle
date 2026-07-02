@@ -69,8 +69,16 @@ Route::prefix('family')->middleware(['auth','family_parent'])->group(function ()
     Route::get('/caregivers', [FamilyController::class, 'caregivers'])->name('family.caregivers');
     Route::get('/members', [FamilyController::class, 'members'])->name('family.members'); // backward compatible
     Route::get('/roles', [FamilyController::class, 'roles'])->name('family.roles');
+
+    // Caregiver edit/delete
+    Route::get('/caregiver/{user_id}/edit', [\App\Http\Controllers\FamilyCaregiverController::class, 'edit'])->name('family.editCaregiver');
+    Route::post('/caregiver/{user_id}', [\App\Http\Controllers\FamilyCaregiverController::class, 'update'])->name('family.updateCaregiver');
+    Route::delete('/caregiver/{user_id}', [\App\Http\Controllers\FamilyCaregiverController::class, 'delete'])->name('family.deleteCaregiver');
+
+
     Route::post('/device/assign-to-caregiver', [FamilyController::class, 'assignDeviceToCaregiver'])->name('family.assignDeviceToCaregiver');
     Route::post('/device/unassign-from-caregiver', [FamilyController::class, 'unassignDeviceFromCaregiver'])->name('family.unassignDeviceFromCaregiver');
+
 
 
 

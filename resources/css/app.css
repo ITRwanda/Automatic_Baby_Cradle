@@ -84,3 +84,197 @@ body {
     color: #111827;
 }
 
+/* ── Filter panel ─────────────────────────────────────────── */
+.filter-panel {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.06);
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-label {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #555;
+    margin-bottom: .3rem;
+}
+
+.active-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    background: #fff5f5;
+    color: #4d0000;
+    border: 1px solid #fbb;
+    border-radius: 20px;
+    padding: .2em .75em;
+    font-size: .75rem;
+    font-weight: 600;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.report-tabs {
+    border-bottom: 2px solid #e8e8e8;
+    margin-bottom: 1.25rem;
+}
+
+.report-tab {
+    display: inline-block;
+    padding: .55rem 1.1rem;
+    font-size: .88rem;
+    font-weight: 600;
+    color: #666;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color .15s, border-color .15s;
+}
+
+.report-tab:hover {
+    color: #4d0000;
+}
+
+.report-tab.active {
+    color: #4d0000;
+    border-bottom-color: #4d0000;
+}
+
+/* ── Table ───────────────────────────────────────────────── */
+.rpt-table thead th {
+    background: #f7f8fc;
+    font-size: .74rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #555;
+    border-bottom: 2px solid #e8eaf0;
+    white-space: nowrap;
+    padding: .65rem .9rem;
+}
+
+.rpt-table tbody td {
+    padding: .6rem .9rem;
+    vertical-align: middle;
+    font-size: .87rem;
+}
+
+.rpt-table tbody tr:hover {
+    background: #fafbff;
+}
+
+/* ── Status badges ───────────────────────────────────────── */
+.pill-open {
+    background:#fff0f0;
+    color:#c0392b;
+    border:1px solid #fcc;
+    border-radius:20px;
+    padding:.18em .65em;
+    font-size:.76rem;
+    font-weight:700;
+}
+
+.pill-resolved {
+    background:#f0fff4;
+    color:#276749;
+    border:1px solid #9ae6b4;
+    border-radius:20px;
+    padding:.18em .65em;
+    font-size:.76rem;
+    font-weight:700;
+}
+
+.pill-auth {
+    background:#f0fff4;
+    color:#276749;
+    border:1px solid #9ae6b4;
+    border-radius:20px;
+    padding:.18em .65em;
+    font-size:.76rem;
+    font-weight:700;
+}
+
+.pill-unauth {
+    background:#fff0f0;
+    color:#c0392b;
+    border:1px solid #fcc;
+    border-radius:20px;
+    padding:.18em .65em;
+    font-size:.76rem;
+    font-weight:700;
+}
+
+/* ── Lab breakdown bar ────────────────────────────────────── */
+.lab-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: #e8eaf0;
+    overflow: hidden;
+}
+
+.lab-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg,#4d0000,#c0392b);
+    transition: width .4s;
+}
+
+/* ── Export bar ───────────────────────────────────────────── */
+.export-bar {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.btn-export-csv {
+    background:#16a34a;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:.4rem .9rem;
+    font-size:.8rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:.35rem;
+}
+
+.btn-export-csv:hover {
+    background:#15803d;
+    color:#fff;
+}
+
+.btn-export-pdf {
+    background:#dc2626;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:.4rem .9rem;
+    font-size:.8rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:.35rem;
+}
+
+.btn-export-pdf:hover {
+    background:#b91c1c;
+    color:#fff;
+}
+
+/* ── Ensure report UI styles are not overridden by Bootstrap defaults ── */
+.rpt-table .pill-open,
+.rpt-table .pill-resolved,
+.rpt-table .pill-auth,
+.rpt-table .pill-unauth {
+    line-height: 1.2;
+}
+
+.rpt-table td,
+.rpt-table th {
+    border-top: 1px solid #eef0f6;
+}
+
+
+
