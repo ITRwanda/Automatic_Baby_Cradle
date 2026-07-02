@@ -7,6 +7,9 @@ use App\Models\Device;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
+
 
 class FamilyController extends Controller
 {
@@ -178,9 +181,16 @@ class FamilyController extends Controller
      */
     public function reports(Request $request)
     {
+        $activities = $this->familyReportsData($request);
+
+        return view('family.reports', compact('activities'));
+    }
+
+    protected function familyReportsData(Request $request)
+    {
         $family = Auth::user()->family;
         if (!$family) {
-            return view('family.reports', ['activities' => collect(), 'devices' => collect()]);
+            return collect();
         }
 
         $query = \App\Models\DeviceActivity::query()->with(['device.family']);
@@ -207,10 +217,69 @@ class FamilyController extends Controller
             $query->whereDate('created_at', '<=', $to);
         }
 
-        $activities = $query->orderByDesc('created_at')->get();
-
-        return view('family.reports', compact('activities'));
+        return $query->orderByDesc('created_at')->get();
     }
+
+    /**
+     * Family report export CSV
+     */
+    public function exportFamilyReportsCsv(Request $request)
+    {
+        $activities = $this->familyReportsData($request);
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="family_incident_report.csv"',
+        ];
+
+        $stream = function () use ($activities) {
+            $out = fopen('php://output', 'w');
+            fprintf($out, "\xEF\xBB\xBF");
+
+            fputcsv($out, [
+                'Time',
+                'Device Name',
+                'Device Token',
+                'Family',
+                'Event Type',
+                'Payload',
+            ]);
+
+            foreach ($activities as $a) {
+                fputcsv($out, [
+                    $a->created_at?->format('Y-m-d H:i:s'),
+                    $a->device->device_name ?? '—',
+                    $a->device->device_token ?? '—',
+                    optional($a->device->family)->family_name ?? 'Unassigned',
+                    $a->event_type ?? '',
+                    $a->payload ?? '',
+                ]);
+            }
+
+            fclose($out);
+        };
+
+        return Response::stream($stream, 200, $headers);
+    }
+
+    /**
+     * Family report export PDF (print-view HTML)
+     */
+    public function exportFamilyReportsPdf(Request $request)
+    {
+        $activities = $this->familyReportsData($request);
+
+        return View::make('family.exports.family_report_print', [
+            'activities' => $activities,
+            'reportTitle' => 'Family Incident Report',
+            'filters' => [
+                'q' => $request->input('q'),
+                'from' => $request->input('from'),
+                'to' => $request->input('to'),
+            ],
+        ]);
+    }
+
 
 
     /**

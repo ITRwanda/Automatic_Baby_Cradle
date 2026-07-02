@@ -8,10 +8,13 @@ use App\Models\Device;
 use App\Models\DeviceActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
 
 
 class AdminController extends Controller
 {
+
     /**
      * Show Admin Dashboard
      */
@@ -309,6 +312,13 @@ class AdminController extends Controller
      */
     public function deviceReports(Request $request)
     {
+        [$devices, $families] = $this->deviceReportsData($request);
+
+        return view('admin.device_reports', compact('devices', 'families'));
+    }
+
+    protected function deviceReportsData(Request $request): array
+    {
         $query = Device::with('family');
 
         $familyId = $request->input('family_id');
@@ -337,8 +347,67 @@ class AdminController extends Controller
         $devices = $query->orderByDesc('created_at')->get();
         $families = Family::orderBy('family_name')->get(['id', 'family_name']);
 
-        return view('admin.device_reports', compact('devices', 'families'));
+        return [$devices, $families];
     }
+
+    /**
+     * Export admin device reports as CSV
+     */
+    public function exportDeviceReportsCsv(Request $request)
+    {
+        [$devices, $families] = $this->deviceReportsData($request);
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="device_reports.csv"',
+        ];
+
+        $stream = function () use ($devices) {
+            $out = fopen('php://output', 'w');
+            fprintf($out, "\xEF\xBB\xBF");
+
+            fputcsv($out, [
+                'Device Name',
+                'Device Token',
+                'Family',
+                'Created',
+            ]);
+
+            foreach ($devices as $d) {
+                fputcsv($out, [
+                    $d->device_name ?? '',
+                    $d->device_token ?? '',
+                    optional($d->family)->family_name ?? 'Unassigned',
+                    $d->created_at?->format('Y-m-d'),
+                ]);
+            }
+
+            fclose($out);
+        };
+
+        return Response::stream($stream, 200, $headers);
+    }
+
+    /**
+     * Export admin device reports as PDF (print-view HTML)
+     */
+    public function exportDeviceReportsPdf(Request $request)
+    {
+        [$devices, $families] = $this->deviceReportsData($request);
+
+        return View::make('admin.exports.device_report_print', [
+            'devices' => $devices,
+            'families' => $families,
+            'reportTitle' => 'Device Reports (Admin)',
+            'filters' => [
+                'family_id' => $request->input('family_id'),
+                'q' => $request->input('q'),
+                'from' => $request->input('from'),
+                'to' => $request->input('to'),
+            ],
+        ]);
+    }
+
 
     /**
      * Family reports with filters + actions
@@ -380,6 +449,18 @@ class AdminController extends Controller
      */
     public function megaReports(Request $request)
     {
+        [$activities, $families] = $this->megaReportsData($request);
+
+        return view('admin.mega_report', compact('activities', 'families'));
+    }
+
+    /**
+     * Shared dataset builder for mega reports (UI + exports)
+     *
+     * @return array{0:\Illuminate\Support\Collection,1:\Illuminate\Support\Collection}
+     */
+    protected function megaReportsData(Request $request): array
+    {
         $query = DeviceActivity::query()->with(['device.family']);
 
         $familyId = $request->input('family_id');
@@ -410,8 +491,74 @@ class AdminController extends Controller
         $activities = $query->orderByDesc('created_at')->get();
         $families = Family::orderBy('family_name')->get(['id', 'family_name']);
 
-        return view('admin.mega_report', compact('activities', 'families'));
+        return [$activities, $families];
     }
+
+    /**
+     * Export mega report as CSV (download)
+     */
+    public function exportMegaReportsCsv(Request $request)
+    {
+        [$activities, $families] = $this->megaReportsData($request);
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="mega_incident_report.csv"',
+        ];
+
+        $stream = function () use ($activities) {
+            $out = fopen('php://output', 'w');
+
+            // BOM helps Excel detect UTF-8
+            fprintf($out, "\xEF\xBB\xBF");
+
+            fputcsv($out, [
+                'Time',
+                'Device Name',
+                'Device Token',
+                'Family',
+                'Event Type',
+                'Payload',
+            ]);
+
+            foreach ($activities as $a) {
+                fputcsv($out, [
+                    $a->created_at?->format('Y-m-d H:i:s'),
+                    $a->device->device_name ?? '—',
+                    $a->device->device_token ?? '—',
+                    optional($a->device->family)->family_name ?? 'Unassigned',
+                    $a->event_type ?? '',
+                    $a->payload ?? '',
+                ]);
+            }
+
+            fclose($out);
+        };
+
+        return Response::stream($stream, 200, $headers);
+    }
+
+    /**
+     * Export mega report as PDF (dependency-free): returns print-view HTML.
+     * User can “Print to PDF” from browser.
+     */
+    public function exportMegaReportsPdf(Request $request)
+    {
+        [$activities, $families] = $this->megaReportsData($request);
+
+        return View::make('admin.exports.mega_report_print', [
+            'activities' => $activities,
+            'families' => $families,
+            'filters' => [
+                'family_id' => $request->input('family_id'),
+                'q' => $request->input('q'),
+                'from' => $request->input('from'),
+                'to' => $request->input('to'),
+            ],
+            'reportTitle' => 'Mega / General Incident Report',
+        ]);
+    }
+
 
 }
 

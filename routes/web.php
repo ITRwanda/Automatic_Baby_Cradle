@@ -50,6 +50,9 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
 
     // Mega / general incident report
     Route::get('/mega/reports', [AdminController::class, 'megaReports'])->name('admin.megaReports');
+    Route::get('/mega/reports/export/csv', [AdminController::class, 'exportMegaReportsCsv'])->name('admin.megaReports.exportCsv');
+    Route::get('/mega/reports/export/pdf', [AdminController::class, 'exportMegaReportsPdf'])->name('admin.megaReports.exportPdf');
+
 
     // Device unassign (unsign)
     Route::post('/device/unassign', [AdminController::class, 'unassignDevice'])->name('admin.unassignDevice');
@@ -107,14 +110,20 @@ Route::prefix('family')->middleware(['auth','family_parent'])->group(function ()
 
     Route::get('/devices', [FamilyController::class, 'devices'])->name('family.devices');
     Route::get('/reports', [FamilyController::class, 'reports'])->name('family.reports');
+    Route::get('/reports/export/csv', [FamilyController::class, 'exportFamilyReportsCsv'])->name('family.reports.exportCsv');
+    Route::get('/reports/export/pdf', [FamilyController::class, 'exportFamilyReportsPdf'])->name('family.reports.exportPdf');
 });
+
 
 
 // Caregiver routes
 Route::prefix('caregiver')->middleware(['auth','caregiver'])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\CaregiverController::class, 'dashboard'])->name('caregiver.dashboard');
-    Route::get('/reports', [\App\Http\Controllers\CaregiverController::class, 'reports'])->name('caregiver.reports');
+Route::get('/reports', [\App\Http\Controllers\CaregiverController::class, 'reports'])->name('caregiver.reports');
+    Route::get('/reports/export/csv', [\App\Http\Controllers\CaregiverController::class, 'exportCaregiverReportsCsv'])->name('caregiver.reports.exportCsv');
+    Route::get('/reports/export/pdf', [\App\Http\Controllers\CaregiverController::class, 'exportCaregiverReportsPdf'])->name('caregiver.reports.exportPdf');
     Route::get('/notifications', [\App\Http\Controllers\CaregiverController::class, 'notifications'])->name('caregiver.notifications');
+
 
     // Device assignment should be done by family_parent only.
     // Keep endpoints here but controller blocks caregiver actions.
