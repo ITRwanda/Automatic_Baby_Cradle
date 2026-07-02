@@ -44,6 +44,7 @@
 
                                         <?php echo csrf_field(); ?>
                                         <input type="hidden" name="user_id" value="<?php echo e($member->id); ?>">
+
                                         <div class="row g-2 justify-content-end align-items-center">
                                             <div class="col-auto">
                                                 <select name="device_id" class="form-select form-select-sm" required>
@@ -60,8 +61,12 @@
                                     </form>
 
                                     <div class="mt-2 d-inline-flex gap-2">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary" aria-disabled="true" title="Edit caregiver">Edit</a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger" aria-disabled="true" title="Delete caregiver">Delete</a>
+                                        <a href="<?php echo e(route('family.editCaregiver', $member->id)); ?>" class="btn btn-sm btn-outline-secondary" title="Edit caregiver">Edit</a>
+                                        <form method="POST" action="<?php echo e(route('family.deleteCaregiver', $member->id)); ?>" class="d-inline-block">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete caregiver" onclick="return confirm('Delete this caregiver?')">Delete</button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

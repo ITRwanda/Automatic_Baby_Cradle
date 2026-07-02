@@ -6,6 +6,9 @@ use App\Models\Device;
 use App\Models\DeviceActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\View;
+
 
 class CaregiverController extends Controller
 {
@@ -31,6 +34,13 @@ class CaregiverController extends Controller
      * Shows incident activities for devices assigned to this caregiver.
      */
     public function reports(Request $request)
+    {
+        $activities = $this->caregiverReportsData($request);
+
+        return view('member.reports', compact('activities'));
+    }
+
+    protected function caregiverReportsData(Request $request)
     {
         $caregiver = Auth::user();
 
@@ -58,10 +68,69 @@ class CaregiverController extends Controller
             $query->whereDate('created_at', '<=', $to);
         }
 
-        $activities = $query->orderByDesc('created_at')->get();
-
-        return view('member.reports', compact('activities'));
+        return $query->orderByDesc('created_at')->get();
     }
+
+    /**
+     * Caregiver/member report export CSV
+     */
+    public function exportCaregiverReportsCsv(Request $request)
+    {
+        $activities = $this->caregiverReportsData($request);
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="caregiver_incident_report.csv"',
+        ];
+
+        $stream = function () use ($activities) {
+            $out = fopen('php://output', 'w');
+            fprintf($out, "\xEF\xBB\xBF");
+
+            fputcsv($out, [
+                'Time',
+                'Device Name',
+                'Device Token',
+                'Family',
+                'Event Type',
+                'Payload',
+            ]);
+
+            foreach ($activities as $a) {
+                fputcsv($out, [
+                    $a->created_at?->format('Y-m-d H:i:s'),
+                    $a->device->device_name ?? '—',
+                    $a->device->device_token ?? '—',
+                    optional($a->device->family)->family_name ?? 'Unassigned',
+                    $a->event_type ?? '',
+                    $a->payload ?? '',
+                ]);
+            }
+
+            fclose($out);
+        };
+
+        return Response::stream($stream, 200, $headers);
+    }
+
+    /**
+     * Caregiver/member report export PDF (print-view HTML)
+     */
+    public function exportCaregiverReportsPdf(Request $request)
+    {
+        $activities = $this->caregiverReportsData($request);
+
+        return View::make('member.exports.member_report_print', [
+            'activities' => $activities,
+            'reportTitle' => 'Caregiver Incident Report',
+            'filters' => [
+                'q' => $request->input('q'),
+                'from' => $request->input('from'),
+                'to' => $request->input('to'),
+            ],
+        ]);
+    }
+
 
     /**
      * Placeholder notifications page.

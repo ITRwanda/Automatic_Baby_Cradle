@@ -8,9 +8,25 @@
     </div>
 
     <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-secondary text-white fw-semibold">Filters</div>
+        <div class="card-header bg-secondary text-white fw-semibold">Filters & Export</div>
         <div class="card-body">
+            @php
+                $qs = request()->query();
+                $qs = is_array($qs) ? $qs : [];
+                $csvUrl = route('family.reports.exportCsv', $qs);
+                $pdfUrl = route('family.reports.exportPdf', $qs);
+            @endphp
+
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div class="text-muted small">Export the current filtered result</div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{{ $csvUrl }}" class="btn btn-success btn-sm fw-semibold">Export CSV</a>
+                    <a href="{{ $pdfUrl }}" class="btn btn-outline-danger btn-sm fw-semibold" target="_blank">Export PDF</a>
+                </div>
+            </div>
+
             <form method="GET" action="{{ route('family.reports') }}" class="row g-3">
+
                 <div class="col-md-5">
                     <label class="form-label fw-semibold">Device search</label>
                     <input type="text" name="q" class="form-control" placeholder="Device name or token" value="{{ request('q') }}">

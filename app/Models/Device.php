@@ -12,6 +12,14 @@ class Device extends Model {
     public function family() {
         return $this->belongsTo(Family::class);
     }
+
+    public function user() {
+        // caregiver assigned to this device (stored in devices.user_id)
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
+
+
+
 
 

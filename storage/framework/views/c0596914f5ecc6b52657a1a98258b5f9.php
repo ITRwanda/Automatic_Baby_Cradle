@@ -54,9 +54,25 @@
     <div class="row g-4 mb-4">
         <div class="col-12 col-lg-6">
             <div class="card shadow-sm border-0" style="border-radius:16px; overflow:hidden;">
-                <div class="card-header" style="background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%); color:white; font-weight:700;">Filters</div>
-                <div class="card-body">
-                    <form method="GET" action="<?php echo e(route('caregiver.reports')); ?>" class="row g-3">
+        <div class="card-header" style="background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%); color:white; font-weight:700;">Filters & Export</div>
+        <div class="card-body">
+            <?php
+                $qs = request()->query();
+                $qs = is_array($qs) ? $qs : [];
+                $csvUrl = route('caregiver.reports.exportCsv', $qs);
+                $pdfUrl = route('caregiver.reports.exportPdf', $qs);
+            ?>
+
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div class="text-muted small">Export the current filtered result</div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="<?php echo e($csvUrl); ?>" class="btn btn-success btn-sm fw-semibold">Export CSV</a>
+                    <a href="<?php echo e($pdfUrl); ?>" class="btn btn-outline-danger btn-sm fw-semibold" target="_blank">Export PDF</a>
+                </div>
+            </div>
+
+            <form method="GET" action="<?php echo e(route('caregiver.reports')); ?>" class="row g-3">
+
                         <div class="col-md-7">
                             <label class="form-label fw-semibold">Device search</label>
                             <input type="text" name="q" class="form-control" placeholder="Device name or token" value="<?php echo e(request('q')); ?>">
