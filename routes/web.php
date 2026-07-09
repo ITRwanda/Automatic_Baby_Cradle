@@ -50,8 +50,12 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
 
     // Mega / general incident report
     Route::get('/mega/reports', [AdminController::class, 'megaReports'])->name('admin.megaReports');
+    Route::get('/device/reports/export/csv', [AdminController::class, 'exportDeviceReportsCsv'])->name('admin.deviceReports.exportCsv');
+    Route::get('/device/reports/export/pdf', [AdminController::class, 'exportDeviceReportsPdf'])->name('admin.deviceReports.exportPdf');
+
     Route::get('/mega/reports/export/csv', [AdminController::class, 'exportMegaReportsCsv'])->name('admin.megaReports.exportCsv');
     Route::get('/mega/reports/export/pdf', [AdminController::class, 'exportMegaReportsPdf'])->name('admin.megaReports.exportPdf');
+
 
 
     // Device unassign (unsign)

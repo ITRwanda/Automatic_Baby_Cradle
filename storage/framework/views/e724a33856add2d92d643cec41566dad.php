@@ -11,6 +11,7 @@
         <div class="card-header bg-secondary text-white fw-semibold">Filters</div>
         <div class="card-body">
             <div class="d-flex flex-wrap align-items-center gap-2 justify-content-between mb-3">
+
                 <div class="text-muted small">Export the current filtered result</div>
                 <div class="d-flex gap-2 flex-wrap">
                     <?php
