@@ -31,22 +31,34 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            $roleName = Auth::user()->role->name; // use relationship
-
-            // Only redirect if role is recognized; otherwise show login error.
-            // This prevents false success followed by middleware/route issues.
-
+            $role = Auth::user()->role; // may be null if role_id is invalid
+            $roleName = $role?->name;
 
             if ($roleName === 'admin') {
                 return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
-            } elseif ($roleName === 'family_parent') {
+            }
+
+            if ($roleName === 'family_parent') {
                 return redirect()->route('family.dashboard')->with('success', 'Welcome Family Parent!');
-            } elseif ($roleName === 'family_member') {
+            }
+
+            if ($roleName === 'family_member') {
                 return redirect()->route('member.dashboard')->with('success', 'Welcome Family Member!');
             }
+
+            // If auth succeeded but role isn't mapped, try to redirect by common role slugs.
+            // (Prevents lockout when roles exist in DB but redirect mapping is incomplete.)
+            if ($roleName === 'caregiver') {
+                return redirect()->route('caregiver.dashboard')->with('success', 'Welcome Caregiver!');
+            }
+
+            // Fallback message
+            return back()->with('error', "Your account role '{$roleName}' is not recognized. Please contact admin.");
+
         }
 
         return back()->with('error', 'Invalid credentials provided.');
+
     }
 
     /**

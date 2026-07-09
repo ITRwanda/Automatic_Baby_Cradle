@@ -8,9 +8,25 @@
     </div>
 
     <div class="card shadow-sm border-0 mb-4">
-        <div class="card-header bg-info text-white fw-semibold">Report Filters</div>
+        <div class="card-header bg-info text-white fw-semibold">Report Filters & Export</div>
         <div class="card-body">
+            <?php
+                $qs = request()->query();
+                $qs = is_array($qs) ? $qs : [];
+                $csvUrl = route('admin.deviceReports.exportCsv', $qs);
+                $pdfUrl = route('admin.deviceReports.exportPdf', $qs);
+            ?>
+
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div class="text-muted small">Export the current filtered result</div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="<?php echo e($csvUrl); ?>" class="btn btn-success btn-sm fw-semibold">Export CSV</a>
+                    <a href="<?php echo e($pdfUrl); ?>" class="btn btn-outline-danger btn-sm fw-semibold" target="_blank">Export PDF</a>
+                </div>
+            </div>
+
             <form class="row g-3" method="GET" action="<?php echo e(route('admin.deviceReports')); ?>">
+
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Family</label>
                     <select name="family_id" class="form-select">

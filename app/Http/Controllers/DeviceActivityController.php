@@ -91,7 +91,7 @@ class DeviceActivityController extends Controller
 
                     try {
                         Mail::raw($mailBody, function ($m) use ($recipients, $event) {
-                            $m->subject("IoTBabyCradle Alert — {$event}");
+                            $m->subject("IoT Baby Cradle Alert — {$event}");
                             foreach ($recipients as $recipient) {
                                 $m->to($recipient->email, $recipient->name ?? $recipient->email);
                             }
