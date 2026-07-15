@@ -156,6 +156,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::post('/profile/deactivate', [ProfileController::class, 'deactivate'])->name('profile.deactivate');
+
+    // In-app notifications
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\DeviceActivityController::class, 'markAllRead'])
+         ->name('notifications.markAllRead');
 });
 
 

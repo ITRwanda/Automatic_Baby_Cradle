@@ -4,34 +4,41 @@ namespace App\Http\Controllers;
 
 use App\Models\Device;
 use App\Models\DeviceActivity;
+use App\Models\IncidentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 
-
 class CaregiverController extends Controller
 {
     /**
      * Caregiver dashboard.
-     * Shows only devices assigned to the logged-in caregiver.
      */
     public function dashboard()
     {
         $caregiver = Auth::user();
+
         $devices = Device::query()
             ->where('user_id', $caregiver->id)
             ->get();
 
-        return view('member.dashboard', [
-            'devices' => $devices,
-            'notifications' => [],
-        ]);
+        // Live in-app notifications
+        $notifications = IncidentNotification::where('user_id', $caregiver->id)
+            ->with('device')
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get();
+
+        $unreadCount = IncidentNotification::where('user_id', $caregiver->id)
+            ->whereNull('read_at')
+            ->count();
+
+        return view('member.dashboard', compact('devices', 'notifications', 'unreadCount'));
     }
 
     /**
      * Caregiver reports.
-     * Shows incident activities for devices assigned to this caregiver.
      */
     public function reports(Request $request)
     {
@@ -79,7 +86,7 @@ class CaregiverController extends Controller
         $activities = $this->caregiverReportsData($request);
 
         $headers = [
-            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Type'        => 'text/csv; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="caregiver_incident_report.csv"',
         ];
 
@@ -87,14 +94,7 @@ class CaregiverController extends Controller
             $out = fopen('php://output', 'w');
             fprintf($out, "\xEF\xBB\xBF");
 
-            fputcsv($out, [
-                'Time',
-                'Device Name',
-                'Device Token',
-                'Family',
-                'Event Type',
-                'Payload',
-            ]);
+            fputcsv($out, ['Time', 'Device Name', 'Device Token', 'Family', 'Event Type', 'Payload']);
 
             foreach ($activities as $a) {
                 fputcsv($out, [
@@ -121,30 +121,35 @@ class CaregiverController extends Controller
         $activities = $this->caregiverReportsData($request);
 
         return View::make('member.exports.member_report_print', [
-            'activities' => $activities,
+            'activities'  => $activities,
             'reportTitle' => 'Caregiver Incident Report',
-            'filters' => [
-                'q' => $request->input('q'),
+            'filters'     => [
+                'q'    => $request->input('q'),
                 'from' => $request->input('from'),
-                'to' => $request->input('to'),
+                'to'   => $request->input('to'),
             ],
         ]);
     }
 
-
     /**
-     * Placeholder notifications page.
+     * Notifications page — paginated, with unread count.
      */
     public function notifications()
     {
-        $notifications = []; // later: fetch from notifications table
-        return view('member.notifications', compact('notifications'));
+        $caregiver = Auth::user();
+
+        $notifications = IncidentNotification::where('user_id', $caregiver->id)
+            ->with('device')
+            ->orderByDesc('created_at')
+            ->paginate(20);
+
+        $unreadCount = IncidentNotification::where('user_id', $caregiver->id)
+            ->whereNull('read_at')
+            ->count();
+
+        return view('member.notifications', compact('notifications', 'unreadCount'));
     }
 
-    /**
-     * Caregiver assigns/unassigns are NOT allowed.
-     * Device assignment should be controlled by family_parent.
-     */
     public function assignDevice(Request $request)
     {
         return redirect()->back()->with('error', 'Unauthorized action for caregiver.');
@@ -155,4 +160,3 @@ class CaregiverController extends Controller
         return redirect()->back()->with('error', 'Unauthorized action for caregiver.');
     }
 }
-

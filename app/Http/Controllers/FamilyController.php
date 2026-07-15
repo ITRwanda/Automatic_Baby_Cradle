@@ -18,17 +18,27 @@ class FamilyController extends Controller
      */
     public function dashboard()
     {
-        $family = Auth::user()->family; // assuming User belongsTo Family
+        $user   = Auth::user();
+        $family = $user->family;
 
         $devices = $family ? $family->devices()->get() : collect();
         $members = $family ? $family->members()->get() : collect();
 
-        // Alerts are device-level; aggregate them for the family dashboard.
-        $alerts = $devices->flatMap(function ($device) {
-            return $device->alerts ?? collect();
-        });
+        // Live in-app notifications for this family parent
+        $notifications = \App\Models\IncidentNotification::where('user_id', $user->id)
+            ->with('device')
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get();
 
-        return view('family.dashboard', compact('devices', 'members', 'alerts'));
+        $unreadCount = \App\Models\IncidentNotification::where('user_id', $user->id)
+            ->whereNull('read_at')
+            ->count();
+
+        // Legacy alias
+        $alerts = $notifications;
+
+        return view('family.dashboard', compact('devices', 'members', 'alerts', 'notifications', 'unreadCount'));
     }
 
     /**
