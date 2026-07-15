@@ -49,7 +49,10 @@
                                                 <select name="device_id" class="form-select form-select-sm" required>
                                                     <option value="" selected disabled>Select device</option>
                                                     @foreach($devices as $device)
-                                                        <option value="{{ $device->id }}">{{ $device->device_name }}{{ $device->user_id ? ' (Assigned)' : '' }}</option>
+<option value="{{ $device->id }}" {{ $device->user_id === $member->id ? 'selected' : '' }}>
+                                                        {{ $device->device_name }}
+                                                        {{ $device->user_id ? '(Assigned)' : '(Not assigned)' }}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid mt-4">
+<div class="container-fluid py-4">
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
         <h2 class="mb-0 fw-bold">Mega / General Incident Report (Admin)</h2>
         <span class="text-muted small">Shows all device activities (incidents). Includes device + family info.</span>
@@ -128,26 +128,30 @@
     </div>
 
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-dark text-white fw-semibold">Incidents</div>
+        <div class="card-header bg-dark text-white fw-semibold">Incident Timeline & Payload (Admin)</div>
         <div class="card-body">
             @if(($activities ?? collect())->count() === 0)
-                <div class="alert alert-warning mb-0">No incident activities found.</div>
+                <div class="alert alert-warning mb-0">No incident activities found for the current filters.</div>
             @else
                 <div class="table-responsive">
-                    <table class="table table-striped align-middle">
+                    <table class="table table-striped align-middle" style="min-width: 900px;">
                         <thead>
                         <tr>
-                            <th>Time</th>
-                            <th>Device</th>
-                            <th>Family</th>
-                            <th>Event</th>
+                            <th style="width: 190px;">Time</th>
+                            <th style="width: 240px;">Device</th>
+                            <th style="width: 220px;">Family</th>
+                            <th style="width: 160px;">Event</th>
+                            <th>Payload / Notes</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($activities as $activity)
                             <tr>
                                 <td class="text-muted">{{ $activity->created_at?->format('Y-m-d H:i') }}</td>
-                                <td class="fw-semibold">{{ $activity->device->device_name ?? '—' }}</td>
+                                <td>
+                                    <div class="fw-semibold">{{ $activity->device->device_name ?? '—' }}</div>
+                                    <div class="text-muted small font-monospace">Token: {{ $activity->device->device_token ?? '' }}</div>
+                                </td>
                                 <td>
                                     {{ optional($activity->device->family)->family_name ?? 'Unassigned' }}
                                 </td>
@@ -158,6 +162,7 @@
                                         <span class="text-muted">Incident recorded</span>
                                     @endif
                                 </td>
+                                <td style="white-space: pre-wrap;">{{ $activity->payload ?? '—' }}</td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -166,6 +171,7 @@
             @endif
         </div>
     </div>
+
 </div>
 @endsection
 

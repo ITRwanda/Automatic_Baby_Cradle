@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('device_activities', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        // Table already created by the earlier 2026_06_12_134639 migration.
+        // This file is a duplicate — kept only to preserve migration history.
+        if (!Schema::hasTable('device_activities')) {
+            Schema::create('device_activities', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('device_activities');
+        // Intentionally left as no-op to avoid dropping a shared table.
     }
 };
