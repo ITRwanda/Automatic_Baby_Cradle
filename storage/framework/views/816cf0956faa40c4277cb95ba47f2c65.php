@@ -1,8 +1,5 @@
-{{--
-    Pure partial — included by admin.devices (@include).
-    Do NOT use @extends / @section here.
---}}
-@php $devices = $devices ?? collect(); @endphp
+
+<?php $devices = $devices ?? collect(); ?>
 
 <style>
 .dev-reg-wrap { max-width:1100px; margin:0 auto; }
@@ -41,7 +38,7 @@
 
 <div class="dev-reg-wrap">
 
-    {{-- Page header --}}
+    
     <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:24px;">
         <div>
             <h1 style="font-size:1.45rem;font-weight:800;color:#0f172a;margin:0;">
@@ -55,14 +52,14 @@
 
     <div style="display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;">
 
-        {{-- Register form --}}
+        
         <div class="dev-panel">
             <div class="dev-panel-hdr" style="background:linear-gradient(135deg,#006633,#009944);color:#fff;">
                 <span>➕ Register New Device</span>
             </div>
             <div class="dev-panel-body">
-                <form method="POST" action="{{ route('admin.registerDevice') }}">
-                    @csrf
+                <form method="POST" action="<?php echo e(route('admin.registerDevice')); ?>">
+                    <?php echo csrf_field(); ?>
                     <div style="margin-bottom:14px;">
                         <label class="ff-lbl">Device name *</label>
                         <input class="ff-inp" type="text" name="device_name" required
@@ -76,20 +73,20 @@
             </div>
         </div>
 
-        {{-- Devices list --}}
+        
         <div class="dev-panel">
             <div class="dev-panel-hdr" style="background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;">
                 <span>Registered Devices</span>
                 <span style="background:rgba(255,255,255,.15);color:#fff;border-radius:20px;padding:2px 10px;font-size:.73rem;font-weight:700;">
-                    {{ $devices->count() }} total
+                    <?php echo e($devices->count()); ?> total
                 </span>
             </div>
             <div style="padding:0;overflow-x:auto;">
-                @if($devices->isEmpty())
+                <?php if($devices->isEmpty()): ?>
                     <div style="text-align:center;padding:36px;color:#94a3b8;">
                         No devices registered yet.
                     </div>
-                @else
+                <?php else: ?>
                 <table class="dev-tbl">
                     <thead>
                         <tr>
@@ -100,56 +97,57 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($devices as $device)
+                    <?php $__currentLoopData = $devices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $device): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td style="font-weight:700;color:#0f172a;">{{ $device->device_name }}</td>
+                        <td style="font-weight:700;color:#0f172a;"><?php echo e($device->device_name); ?></td>
                         <td style="font-family:monospace;font-size:.78rem;color:#64748b;">
-                            {{ $device->device_token }}
+                            <?php echo e($device->device_token); ?>
+
                         </td>
                         <td>
-                            @if($device->family_id)
+                            <?php if($device->family_id): ?>
                                 <span style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:20px;padding:2px 9px;font-size:.74rem;font-weight:700;">
                                     Assigned
                                 </span>
-                            @else
+                            <?php else: ?>
                                 <span style="background:#fffbeb;color:#b45309;border:1px solid #fde68a;border-radius:20px;padding:2px 9px;font-size:.74rem;font-weight:700;">
                                     Unassigned
                                 </span>
-                            @endif
+                            <?php endif; ?>
                         </td>
                         <td style="text-align:right;">
                             <div style="display:inline-flex;gap:6px;">
                                 <button class="btn-sm-act btn-rename"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#renDev{{ $device->id }}">
+                                        data-bs-target="#renDev<?php echo e($device->id); ?>">
                                     ✏️ Rename
                                 </button>
                                 <form method="POST"
-                                      action="{{ route('admin.deleteDevice', $device->id) }}"
-                                      onsubmit="return confirm('Delete device «{{ addslashes($device->device_name) }}»? All its activity records will also be removed.')">
-                                    @csrf
+                                      action="<?php echo e(route('admin.deleteDevice', $device->id)); ?>"
+                                      onsubmit="return confirm('Delete device «<?php echo e(addslashes($device->device_name)); ?>»? All its activity records will also be removed.')">
+                                    <?php echo csrf_field(); ?>
                                     <button type="submit" class="btn-sm-act btn-del">🗑</button>
                                 </form>
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
     </div>
 </div>
 
-{{-- ── Rename modals — at body level, outside all tables ── --}}
-@foreach($devices as $device)
-<div class="modal fade" id="renDev{{ $device->id }}" tabindex="-1" aria-hidden="true">
+
+<?php $__currentLoopData = $devices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $device): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<div class="modal fade" id="renDev<?php echo e($device->id); ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius:14px;overflow:hidden;border:none;">
-            <form method="POST" action="{{ route('admin.updateDevice', $device->id) }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('admin.updateDevice', $device->id)); ?>">
+                <?php echo csrf_field(); ?>
                 <div class="modal-header" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;padding:14px 20px;">
                     <h5 class="modal-title" style="color:#fff;font-weight:800;font-size:.95rem;">✏️ Rename Device</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -158,10 +156,10 @@
                     <div>
                         <label class="mf-lbl">Device name *</label>
                         <input type="text" name="device_name" class="mf-inp"
-                               required maxlength="255" value="{{ $device->device_name }}">
+                               required maxlength="255" value="<?php echo e($device->device_name); ?>">
                     </div>
                     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:.8rem;color:#64748b;">
-                        Token (read-only): <code>{{ $device->device_token }}</code>
+                        Token (read-only): <code><?php echo e($device->device_token); ?></code>
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:1px solid #f1f5f9;padding:12px 20px;gap:8px;">
@@ -172,4 +170,5 @@
         </div>
     </div>
 </div>
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<?php /**PATH D:\xampp\htdocs\IoTBabyCradle\resources\views/admin/devices_registration.blade.php ENDPATH**/ ?>

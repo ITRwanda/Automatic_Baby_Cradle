@@ -1,11 +1,11 @@
-@extends('layouts.app')
 
-@section('content')
-@php
+
+<?php $__env->startSection('content'); ?>
+<?php
     $families = $families ?? collect();
     $parents  = $parents  ?? collect();
     $total    = $families->count();
-@endphp
+?>
 
 <style>
 .afr-page { max-width:1200px; margin:0 auto; }
@@ -61,7 +61,7 @@
 
 <div class="afr-page">
 
-    {{-- Page header --}}
+    
     <div class="afr-hdr">
         <div>
             <h1 class="afr-title">
@@ -71,49 +71,49 @@
         </div>
     </div>
 
-    {{-- KPI strip --}}
+    
     <div class="afr-kpi">
         <div class="afr-kpi-card ak-blue">
             <div class="afr-kpi-lbl">Total Families</div>
-            <div class="afr-kpi-val">{{ $total }}</div>
+            <div class="afr-kpi-val"><?php echo e($total); ?></div>
         </div>
         <div class="afr-kpi-card ak-teal">
             <div class="afr-kpi-lbl">Total Devices</div>
-            <div class="afr-kpi-val">{{ $families->sum(fn($f)=>$f->devices->count()) }}</div>
+            <div class="afr-kpi-val"><?php echo e($families->sum(fn($f)=>$f->devices->count())); ?></div>
         </div>
         <div class="afr-kpi-card ak-amber">
             <div class="afr-kpi-lbl">Total Members</div>
-            <div class="afr-kpi-val">{{ $families->sum(fn($f)=>$f->members->count()) }}</div>
+            <div class="afr-kpi-val"><?php echo e($families->sum(fn($f)=>$f->members->count())); ?></div>
         </div>
     </div>
 
-    {{-- Filters panel --}}
+    
     <div class="afr-panel">
         <div class="afr-panel-hdr" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;">
             <span>🔍 Filters</span>
         </div>
         <div class="afr-panel-body">
-            <form method="GET" action="{{ route('admin.familyReports') }}"
+            <form method="GET" action="<?php echo e(route('admin.familyReports')); ?>"
                   style="display:grid;grid-template-columns:1fr 160px 160px auto;gap:14px;align-items:flex-end;">
                 <div>
                     <label class="ff-lbl">Search family / parent</label>
                     <input class="ff-inp" type="text" name="q"
-                           placeholder="Family name, parent name or email…" value="{{ request('q') }}">
+                           placeholder="Family name, parent name or email…" value="<?php echo e(request('q')); ?>">
                 </div>
                 <div>
                     <label class="ff-lbl">From</label>
-                    <input class="ff-inp" type="date" name="from" value="{{ request('from') }}">
+                    <input class="ff-inp" type="date" name="from" value="<?php echo e(request('from')); ?>">
                 </div>
                 <div>
                     <label class="ff-lbl">To</label>
-                    <input class="ff-inp" type="date" name="to" value="{{ request('to') }}">
+                    <input class="ff-inp" type="date" name="to" value="<?php echo e(request('to')); ?>">
                 </div>
                 <div style="display:flex;gap:8px;">
                     <button type="submit"
                             style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:.86rem;font-weight:700;cursor:pointer;">
                         Apply
                     </button>
-                    <a href="{{ route('admin.familyReports') }}"
+                    <a href="<?php echo e(route('admin.familyReports')); ?>"
                        style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 14px;font-size:.86rem;font-weight:600;text-decoration:none;">
                         Reset
                     </a>
@@ -122,15 +122,15 @@
         </div>
     </div>
 
-    {{-- Families table --}}
+    
     <div class="afr-panel">
         <div class="afr-panel-hdr" style="background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;">
-            <span>Families ({{ $total }})</span>
+            <span>Families (<?php echo e($total); ?>)</span>
         </div>
         <div style="padding:0;">
-            @if($families->isEmpty())
+            <?php if($families->isEmpty()): ?>
                 <div class="afr-empty">No families match your filters.</div>
-            @else
+            <?php else: ?>
             <div style="overflow-x:auto;">
                 <table class="afr-tbl">
                     <thead>
@@ -144,74 +144,76 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($families as $family)
-                    @php
+                    <?php $__currentLoopData = $families; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $family): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
                         $pName  = optional($family->parent)->name  ?? '—';
                         $pEmail = optional($family->parent)->email ?? '';
                         $memCnt = $family->members->count();
                         $devCnt = $family->devices->count();
-                    @endphp
+                    ?>
                     <tr>
                         <td>
-                            <div style="font-weight:700;color:#0f172a;">{{ $family->family_name }}</div>
-                            <div style="font-size:.72rem;color:#94a3b8;">ID #{{ $family->id }}</div>
+                            <div style="font-weight:700;color:#0f172a;"><?php echo e($family->family_name); ?></div>
+                            <div style="font-size:.72rem;color:#94a3b8;">ID #<?php echo e($family->id); ?></div>
                         </td>
                         <td>
-                            <div style="font-weight:600;color:#0f172a;">{{ $pName }}</div>
-                            <div style="font-size:.74rem;color:#64748b;">{{ $pEmail }}</div>
+                            <div style="font-weight:600;color:#0f172a;"><?php echo e($pName); ?></div>
+                            <div style="font-size:.74rem;color:#64748b;"><?php echo e($pEmail); ?></div>
                         </td>
                         <td>
                             <span style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:20px;padding:2px 10px;font-size:.75rem;font-weight:700;">
-                                {{ $memCnt }}
+                                <?php echo e($memCnt); ?>
+
                             </span>
                         </td>
                         <td>
                             <span style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:20px;padding:2px 10px;font-size:.75rem;font-weight:700;">
-                                {{ $devCnt }}
+                                <?php echo e($devCnt); ?>
+
                             </span>
                         </td>
                         <td style="font-size:.8rem;color:#64748b;">
-                            {{ $family->created_at?->format('d M Y') }}
+                            <?php echo e($family->created_at?->format('d M Y')); ?>
+
                         </td>
                         <td style="text-align:right;">
                             <div style="display:inline-flex;gap:6px;">
                                 <button class="btn-act btn-modify"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#frMod{{ $family->id }}">
+                                        data-bs-target="#frMod<?php echo e($family->id); ?>">
                                     ✏️ Modify
                                 </button>
                                 <form method="POST"
-                                      action="{{ route('admin.deleteFamily', $family->id) }}"
-                                      onsubmit="return confirm('Delete «{{ addslashes($family->family_name) }}»? This also removes its devices and members.')">
-                                    @csrf
+                                      action="<?php echo e(route('admin.deleteFamily', $family->id)); ?>"
+                                      onsubmit="return confirm('Delete «<?php echo e(addslashes($family->family_name)); ?>»? This also removes its devices and members.')">
+                                    <?php echo csrf_field(); ?>
                                     <button type="submit" class="btn-act btn-danger">🗑 Delete</button>
                                 </form>
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
-</div>{{-- /afr-page --}}
+</div>
 
-{{-- ════════════════════════════════════════════════════════
-     MODALS — rendered OUTSIDE the table, at body level
-     ════════════════════════════════════════════════════════ --}}
-@foreach($families as $family)
-<div class="modal fade" id="frMod{{ $family->id }}" tabindex="-1" aria-hidden="true">
+
+<?php $__currentLoopData = $families; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $family): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<div class="modal fade" id="frMod<?php echo e($family->id); ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content" style="border-radius:16px;overflow:hidden;border:none;">
-            <form method="POST" action="{{ route('admin.updateFamily', $family->id) }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('admin.updateFamily', $family->id)); ?>">
+                <?php echo csrf_field(); ?>
 
                 <div class="modal-header" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;padding:16px 22px;">
                     <h5 class="modal-title" style="color:#fff;font-weight:800;font-size:1rem;">
-                        ✏️ Modify Family — {{ $family->family_name }}
+                        ✏️ Modify Family — <?php echo e($family->family_name); ?>
+
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -221,7 +223,7 @@
                     <div>
                         <label class="mf-lbl">Family name *</label>
                         <input type="text" name="family_name" class="mf-inp"
-                               required maxlength="255" value="{{ $family->family_name }}">
+                               required maxlength="255" value="<?php echo e($family->family_name); ?>">
                     </div>
 
                     <div style="border-top:1px solid #f1f5f9;padding-top:14px;">
@@ -232,12 +234,12 @@
                             <div>
                                 <label class="mf-lbl">Parent name</label>
                                 <input type="text" name="parent_name" class="mf-inp"
-                                       value="{{ optional($family->parent)->name }}" placeholder="Full name">
+                                       value="<?php echo e(optional($family->parent)->name); ?>" placeholder="Full name">
                             </div>
                             <div>
                                 <label class="mf-lbl">Parent email</label>
                                 <input type="email" name="parent_email" class="mf-inp"
-                                       value="{{ optional($family->parent)->email }}" placeholder="email@example.com">
+                                       value="<?php echo e(optional($family->parent)->email); ?>" placeholder="email@example.com">
                             </div>
                             <div>
                                 <label class="mf-lbl">New password <span style="font-weight:400;color:#94a3b8;">(optional)</span></label>
@@ -265,6 +267,8 @@
         </div>
     </div>
 </div>
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\IoTBabyCradle\resources\views/admin/family_reports.blade.php ENDPATH**/ ?>

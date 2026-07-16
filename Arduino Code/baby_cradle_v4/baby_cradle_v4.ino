@@ -16,11 +16,11 @@
 #include <DHT.h>
 
 // ─── WiFi credentials ───────────────────────────────
-const char* WIFI_SSID     = "itel V52A";
-const char* WIFI_PASSWORD = "hx3xhh2x8v523gt";
+const char* WIFI_SSID     = "Bora";
+const char* WIFI_PASSWORD = "valentine";
 
 // ─── Server settings ────────────────────────────────
-const char* SERVER_HOST   = "http://192.168.201.236:8000";
+const char* SERVER_HOST   = "http://172.20.10.4:8000";
 const char* API_ENDPOINT  = "/api/device-activities";
 const char* DEVICE_TOKEN  = "dd332414-fed9-46c7-9cf4-f5a5c9c1ef17";
 
@@ -34,7 +34,7 @@ const char* DEVICE_TOKEN  = "dd332414-fed9-46c7-9cf4-f5a5c9c1ef17";
 #define LED_GREEN_PIN     D7   // GPIO13
 
 // ─── Thresholds ─────────────────────────────────────
-const int   CRY_THRESHOLD = 600;
+const int   CRY_THRESHOLD = 400;
 const float TEMP_HIGH     = 35.0;
 const float TEMP_LOW      = 16.0;
 const float HUMID_HIGH    = 80.0;

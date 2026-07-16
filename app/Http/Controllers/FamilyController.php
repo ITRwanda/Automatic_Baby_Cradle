@@ -135,6 +135,10 @@ class FamilyController extends Controller
 
         $memberRoleId = \App\Models\Role::where('name', 'caregiver')->value('id');
 
+        if (!$memberRoleId) {
+            return redirect()->back()->with('error', 'Role "caregiver" not found. Please seed the roles table first.');
+        }
+
 
         $existingFamilyMembersCount = User::where('family_id', $family?->id)
             ->where('role_id', $memberRoleId)

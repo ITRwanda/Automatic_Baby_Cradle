@@ -74,43 +74,30 @@ Route::prefix('admin')->middleware(['auth','admin'])->group(function () {
 Route::prefix('family')->middleware(['auth','family_parent'])->group(function () {
     Route::get('/dashboard', [FamilyController::class, 'dashboard'])->name('family.dashboard');
     Route::get('/caregivers', [FamilyController::class, 'caregivers'])->name('family.caregivers');
-    Route::get('/members', [FamilyController::class, 'members'])->name('family.members'); // backward compatible
+    Route::get('/members', [FamilyController::class, 'members'])->name('family.members');
     Route::get('/roles', [FamilyController::class, 'roles'])->name('family.roles');
 
-    // Caregiver edit/delete
-    Route::get('/caregiver/{user_id}/edit', [\App\Http\Controllers\FamilyCaregiverController::class, 'edit'])->name('family.editCaregiver');
-    Route::post('/caregiver/{user_id}', [\App\Http\Controllers\FamilyCaregiverController::class, 'update'])->name('family.updateCaregiver');
-    Route::delete('/caregiver/{user_id}', [\App\Http\Controllers\FamilyCaregiverController::class, 'delete'])->name('family.deleteCaregiver');
-
-
-    Route::post('/device/assign-to-caregiver', [FamilyController::class, 'assignDeviceToCaregiver'])->name('family.assignDeviceToCaregiver');
-    Route::post('/device/unassign-from-caregiver', [FamilyController::class, 'unassignDeviceFromCaregiver'])->name('family.unassignDeviceFromCaregiver');
-
-
-
-
-
+    // ── Static caregiver/member add routes MUST come BEFORE {user_id} wildcard ──
     Route::get('/caregiver/add', function () {
         return redirect()->route('family.caregivers');
     })->name('family.caregiverAddForm');
 
-    // Legacy compatibility: some templates might link to the old add path.
-    // Route should be GET (redirect) not POST.
+    Route::post('/caregiver/add', [FamilyController::class, 'addCaregiver'])->name('family.addCaregiver');
+
     Route::get('/member/add', function () {
         return redirect()->route('family.caregivers');
     })->name('family.memberAddForm');
 
-
-
-    Route::post('/caregiver/add', [FamilyController::class, 'addCaregiver'])->name('family.addCaregiver');
-    Route::post('/member/role', [FamilyController::class, 'assignRole'])->name('family.assignRole');
-    // Legacy compatibility: keep old POST target but route name expected by existing Blade is `family.addMember`.
     Route::post('/member/add', [FamilyController::class, 'addCaregiver'])->name('family.addMember');
+    Route::post('/member/role', [FamilyController::class, 'assignRole'])->name('family.assignRole');
 
+    // ── Wildcard {user_id} routes AFTER static ones ──
+    Route::get('/caregiver/{user_id}/edit', [\App\Http\Controllers\FamilyCaregiverController::class, 'edit'])->name('family.editCaregiver');
+    Route::post('/caregiver/{user_id}', [\App\Http\Controllers\FamilyCaregiverController::class, 'update'])->name('family.updateCaregiver');
+    Route::delete('/caregiver/{user_id}', [\App\Http\Controllers\FamilyCaregiverController::class, 'delete'])->name('family.deleteCaregiver');
 
-
-
-
+    Route::post('/device/assign-to-caregiver', [FamilyController::class, 'assignDeviceToCaregiver'])->name('family.assignDeviceToCaregiver');
+    Route::post('/device/unassign-from-caregiver', [FamilyController::class, 'unassignDeviceFromCaregiver'])->name('family.unassignDeviceFromCaregiver');
 
     Route::get('/devices', [FamilyController::class, 'devices'])->name('family.devices');
     Route::get('/reports', [FamilyController::class, 'reports'])->name('family.reports');
