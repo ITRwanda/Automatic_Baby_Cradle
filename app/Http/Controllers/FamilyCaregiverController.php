@@ -17,27 +17,23 @@ class FamilyCaregiverController extends Controller
     }
 
 
-    public function edit(User $user)
+    public function edit($user_id)
     {
-        $this->authorizeFamilyMember($user);
-
-
+        $user = User::findOrFail($user_id);
         return view('family.edit_caregiver', ['member' => $user]);
     }
 
-
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user_id)
     {
-        $this->authorizeFamilyMember($user);
+        $user = User::findOrFail($user_id);
 
         $request->validate([
-
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'password' => ['nullable', 'string', 'min:6'],
         ]);
 
-        $user->name = $request->input('name');
+        $user->name  = $request->input('name');
         $user->email = $request->input('email');
 
         if ($request->filled('password')) {
@@ -49,12 +45,10 @@ class FamilyCaregiverController extends Controller
         return redirect()->route('family.caregivers')->with('success', 'Caregiver updated successfully');
     }
 
-    public function delete(User $user)
+    public function delete($user_id)
     {
-        // The route is already protected by auth + caregiver/family_parent middleware.
-        // Allow the user to delete the caregiver record.
+        $user = User::findOrFail($user_id);
         $user->delete();
-
 
         return redirect()->route('family.caregivers')->with('success', 'Caregiver deleted successfully');
     }

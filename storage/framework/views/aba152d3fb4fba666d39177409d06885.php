@@ -1,11 +1,11 @@
-@extends('layouts.app')
 
-@section('content')
-@php
+
+<?php $__env->startSection('content'); ?>
+<?php
     $families   = $families   ?? collect();
     $parents    = $parents    ?? collect();
     $allDevices = $allDevices ?? collect();
-@endphp
+?>
 
 <style>
 .fmgr-page { max-width:1380px; margin:0 auto; }
@@ -71,7 +71,7 @@
 
 <div class="fmgr-page">
 
-    {{-- Page header --}}
+    
     <div class="fmgr-hdr">
         <div>
             <h1 class="fmgr-title">
@@ -86,32 +86,32 @@
 
     <div class="fmgr-grid">
 
-        {{-- ── LEFT: Create family ── --}}
+        
         <div class="fmgr-panel">
             <div class="fmgr-panel-hdr" style="background:linear-gradient(135deg,#006633,#009944);color:#fff;">
                 <span>➕ Create New Family</span>
             </div>
             <div class="fmgr-panel-body">
 
-                @if($errors->any())
+                <?php if($errors->any()): ?>
                     <div style="background:#fff1f2;border:1.5px solid #fecdd3;border-radius:10px;padding:12px 15px;margin-bottom:16px;color:#be123c;font-size:.84rem;">
                         <strong>Please fix:</strong>
                         <ul style="margin:6px 0 0;padding-left:18px;">
-                            @foreach($errors->all() as $err)
-                                <li>{{ $err }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $err): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($err); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                <form method="POST" action="{{ route('admin.createFamily') }}"
+                <form method="POST" action="<?php echo e(route('admin.createFamily')); ?>"
                       style="display:flex;flex-direction:column;gap:13px;">
-                    @csrf
+                    <?php echo csrf_field(); ?>
                     <div>
                         <label class="ff-lbl">Family name *</label>
                         <input class="ff-inp" type="text" name="family_name" required
                                maxlength="255" placeholder="e.g. Johnson Family"
-                               value="{{ old('family_name') }}">
+                               value="<?php echo e(old('family_name')); ?>">
                     </div>
                     <div style="border-top:1px solid #f1f5f9;padding-top:13px;">
                         <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8;margin-bottom:11px;">
@@ -122,13 +122,13 @@
                                 <label class="ff-lbl">Full name *</label>
                                 <input class="ff-inp" type="text" name="parent_name" required
                                        maxlength="255" placeholder="e.g. John Parent"
-                                       value="{{ old('parent_name') }}">
+                                       value="<?php echo e(old('parent_name')); ?>">
                             </div>
                             <div>
                                 <label class="ff-lbl">Email *</label>
                                 <input class="ff-inp" type="email" name="parent_email" required
                                        placeholder="parent@example.com"
-                                       value="{{ old('parent_email') }}">
+                                       value="<?php echo e(old('parent_email')); ?>">
                             </div>
                             <div>
                                 <label class="ff-lbl">Password *</label>
@@ -151,12 +151,13 @@
             </div>
         </div>
 
-        {{-- ── RIGHT: Families table ── --}}
+        
         <div class="fmgr-panel">
             <div class="fmgr-panel-hdr" style="background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;">
                 <span>Registered Families</span>
                 <span style="background:rgba(255,255,255,.15);color:#fff;border-radius:20px;padding:2px 10px;font-size:.73rem;font-weight:700;">
-                    {{ $families->count() }} &nbsp;·&nbsp; {{ $allDevices->whereNull('family_id')->count() }} unassigned device{{ $allDevices->whereNull('family_id')->count()!==1?'s':'' }}
+                    <?php echo e($families->count()); ?> &nbsp;·&nbsp; <?php echo e($allDevices->whereNull('family_id')->count()); ?> unassigned device<?php echo e($allDevices->whereNull('family_id')->count()!==1?'s':''); ?>
+
                 </span>
             </div>
 
@@ -165,9 +166,9 @@
                        placeholder="Search by family name, parent name or email…">
             </div>
 
-            @if($families->isEmpty())
+            <?php if($families->isEmpty()): ?>
                 <div style="text-align:center;padding:36px;color:#94a3b8;">No families yet. Create one on the left.</div>
-            @else
+            <?php else: ?>
             <div style="overflow-x:auto;padding-bottom:4px;">
                 <table class="fmgr-tbl">
                     <thead>
@@ -180,82 +181,83 @@
                         </tr>
                     </thead>
                     <tbody id="fmgrTbody">
-                    @foreach($families as $family)
-                    @php
+                    <?php $__currentLoopData = $families; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $family): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
                         $pName  = optional($family->parent)->name  ?? '—';
                         $pEmail = optional($family->parent)->email ?? '';
                         $devCnt = ($family->devices ?? collect())->count();
                         $memCnt = ($family->members ?? collect())->count();
                         $srch   = strtolower($family->family_name.' '.$pName.' '.$pEmail);
-                    @endphp
-                    <tr data-search="{{ $srch }}">
+                    ?>
+                    <tr data-search="<?php echo e($srch); ?>">
                         <td>
-                            <div style="font-weight:700;color:#0f172a;">{{ $family->family_name }}</div>
-                            <div style="font-size:.71rem;color:#94a3b8;">ID #{{ $family->id }}</div>
+                            <div style="font-weight:700;color:#0f172a;"><?php echo e($family->family_name); ?></div>
+                            <div style="font-size:.71rem;color:#94a3b8;">ID #<?php echo e($family->id); ?></div>
                         </td>
                         <td>
-                            <div style="font-weight:600;color:#0f172a;">{{ $pName }}</div>
-                            <div style="font-size:.73rem;color:#64748b;">{{ $pEmail }}</div>
+                            <div style="font-weight:600;color:#0f172a;"><?php echo e($pName); ?></div>
+                            <div style="font-size:.73rem;color:#64748b;"><?php echo e($pEmail); ?></div>
                         </td>
                         <td>
                             <span style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:20px;padding:2px 9px;font-size:.74rem;font-weight:700;">
-                                {{ $memCnt }}
+                                <?php echo e($memCnt); ?>
+
                             </span>
                         </td>
                         <td>
                             <span style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:20px;padding:2px 9px;font-size:.74rem;font-weight:700;">
-                                {{ $devCnt }}
+                                <?php echo e($devCnt); ?>
+
                             </span>
                         </td>
                         <td style="text-align:right;">
                             <div style="display:inline-flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;">
                                 <button class="btn-act btn-modify"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#fmMod{{ $family->id }}">
+                                        data-bs-target="#fmMod<?php echo e($family->id); ?>">
                                     ✏️ Modify
                                 </button>
                                 <button class="btn-act btn-assign"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#fmDev{{ $family->id }}">
+                                        data-bs-target="#fmDev<?php echo e($family->id); ?>">
                                     📟 Devices
                                 </button>
                                 <form method="POST"
-                                      action="{{ route('admin.deleteFamily', $family->id) }}"
-                                      onsubmit="return confirm('Delete «{{ addslashes($family->family_name) }}»?\nThis also removes its devices and members.')">
-                                    @csrf
+                                      action="<?php echo e(route('admin.deleteFamily', $family->id)); ?>"
+                                      onsubmit="return confirm('Delete «<?php echo e(addslashes($family->family_name)); ?>»?\nThis also removes its devices and members.')">
+                                    <?php echo csrf_field(); ?>
                                     <button type="submit" class="btn-act btn-danger">🗑</button>
                                 </form>
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
-            @endif
+            <?php endif; ?>
         </div>
 
-    </div>{{-- /grid --}}
-</div>{{-- /page --}}
+    </div>
+</div>
 
-{{-- ════════════════════════════════════════════════════════
-     ALL MODALS — rendered at body level, OUTSIDE tables
-     ════════════════════════════════════════════════════════ --}}
-@foreach($families as $family)
-@php
+
+<?php $__currentLoopData = $families; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $family): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php
     $unassigned = $allDevices->whereNull('family_id');
     $assigned   = $family->devices ?? collect();
-@endphp
+?>
 
-{{-- ── MODIFY FAMILY ── --}}
-<div class="modal fade" id="fmMod{{ $family->id }}" tabindex="-1" aria-hidden="true">
+
+<div class="modal fade" id="fmMod<?php echo e($family->id); ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content" style="border-radius:16px;overflow:hidden;border:none;">
-            <form method="POST" action="{{ route('admin.updateFamily', $family->id) }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('admin.updateFamily', $family->id)); ?>">
+                <?php echo csrf_field(); ?>
                 <div class="modal-header" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;padding:16px 22px;">
                     <h5 class="modal-title" style="color:#fff;font-weight:800;font-size:1rem;">
-                        ✏️ Modify — {{ $family->family_name }}
+                        ✏️ Modify — <?php echo e($family->family_name); ?>
+
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -263,7 +265,7 @@
                     <div>
                         <label class="mf-lbl">Family name *</label>
                         <input type="text" name="family_name" class="mf-inp"
-                               required maxlength="255" value="{{ $family->family_name }}">
+                               required maxlength="255" value="<?php echo e($family->family_name); ?>">
                     </div>
                     <div style="border-top:1px solid #f1f5f9;padding-top:14px;">
                         <div style="font-size:.71rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8;margin-bottom:11px;">
@@ -273,12 +275,12 @@
                             <div>
                                 <label class="mf-lbl">Parent name</label>
                                 <input type="text" name="parent_name" class="mf-inp"
-                                       value="{{ optional($family->parent)->name }}" placeholder="Full name">
+                                       value="<?php echo e(optional($family->parent)->name); ?>" placeholder="Full name">
                             </div>
                             <div>
                                 <label class="mf-lbl">Parent email</label>
                                 <input type="email" name="parent_email" class="mf-inp"
-                                       value="{{ optional($family->parent)->email }}" placeholder="email@example.com">
+                                       value="<?php echo e(optional($family->parent)->email); ?>" placeholder="email@example.com">
                             </div>
                             <div>
                                 <label class="mf-lbl">New password <span style="font-weight:400;color:#94a3b8;">(optional)</span></label>
@@ -302,14 +304,15 @@
     </div>
 </div>
 
-{{-- ── MANAGE DEVICES ── --}}
-<div class="modal fade" id="fmDev{{ $family->id }}" tabindex="-1" aria-hidden="true">
+
+<div class="modal fade" id="fmDev<?php echo e($family->id); ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content" style="border-radius:16px;overflow:hidden;border:none;">
             <div class="modal-header" style="background:linear-gradient(135deg,#006633,#009944);border:none;padding:16px 22px;">
                 <div>
                     <h5 class="modal-title" style="color:#fff;font-weight:800;font-size:1rem;">
-                        📟 Manage Devices — {{ $family->family_name }}
+                        📟 Manage Devices — <?php echo e($family->family_name); ?>
+
                     </h5>
                     <div style="font-size:.77rem;color:rgba(255,255,255,.75);margin-top:2px;">
                         Assign available devices or manage ones already linked to this family.
@@ -319,88 +322,90 @@
             </div>
             <div class="modal-body" style="padding:22px;">
 
-                {{-- Unassigned devices --}}
+                
                 <div style="font-size:.71rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8;margin-bottom:9px;">
-                    Available (unassigned) — {{ $unassigned->count() }}
+                    Available (unassigned) — <?php echo e($unassigned->count()); ?>
+
                 </div>
-                @if($unassigned->isEmpty())
+                <?php if($unassigned->isEmpty()): ?>
                     <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px;text-align:center;color:#94a3b8;font-size:.84rem;margin-bottom:18px;">
                         No unassigned devices. Register one first on the Devices page.
                     </div>
-                @else
+                <?php else: ?>
                     <div style="margin-bottom:20px;">
-                        @foreach($unassigned as $dev)
+                        <?php $__currentLoopData = $unassigned; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dev): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="dev-row">
                             <div>
-                                <div class="dev-name">{{ $dev->device_name }}</div>
-                                <div class="dev-token">{{ $dev->device_token }}</div>
+                                <div class="dev-name"><?php echo e($dev->device_name); ?></div>
+                                <div class="dev-token"><?php echo e($dev->device_token); ?></div>
                             </div>
-                            <form method="POST" action="{{ route('admin.assignDevice') }}">
-                                @csrf
-                                <input type="hidden" name="device_id" value="{{ $dev->id }}">
-                                <input type="hidden" name="family_id"  value="{{ $family->id }}">
+                            <form method="POST" action="<?php echo e(route('admin.assignDevice')); ?>">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="device_id" value="<?php echo e($dev->id); ?>">
+                                <input type="hidden" name="family_id"  value="<?php echo e($family->id); ?>">
                                 <button type="submit"
                                         style="background:linear-gradient(135deg,#006633,#009944);color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:.8rem;font-weight:700;cursor:pointer;">
                                     Assign →
                                 </button>
                             </form>
                         </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                {{-- Assigned devices --}}
+                
                 <div style="border-top:1px solid #f1f5f9;padding-top:18px;">
                     <div style="font-size:.71rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8;margin-bottom:9px;">
-                        Assigned to this family — {{ $assigned->count() }}
+                        Assigned to this family — <?php echo e($assigned->count()); ?>
+
                     </div>
-                    @if($assigned->isEmpty())
+                    <?php if($assigned->isEmpty()): ?>
                         <div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:12px;text-align:center;color:#15803d;font-size:.84rem;">
                             No devices assigned yet.
                         </div>
-                    @else
-                        @foreach($assigned as $dev)
+                    <?php else: ?>
+                        <?php $__currentLoopData = $assigned; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dev): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="dev-row assigned">
                             <div style="flex:1;min-width:0;">
-                                <div class="dev-name">{{ $dev->device_name }}</div>
-                                <div class="dev-token">{{ $dev->device_token }}</div>
-                                @if($dev->user)
+                                <div class="dev-name"><?php echo e($dev->device_name); ?></div>
+                                <div class="dev-token"><?php echo e($dev->device_token); ?></div>
+                                <?php if($dev->user): ?>
                                     <div style="font-size:.73rem;color:#0f766e;margin-top:2px;">
-                                        👤 Caregiver: {{ $dev->user->name }} ({{ $dev->user->email }})
+                                        👤 Caregiver: <?php echo e($dev->user->name); ?> (<?php echo e($dev->user->email); ?>)
                                     </div>
-                                @else
+                                <?php else: ?>
                                     <div style="font-size:.73rem;color:#f59e0b;margin-top:2px;">
                                         ⚠ No caregiver assigned
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
                             <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;flex-shrink:0;">
-                                {{-- Rename --}}
+                                
                                 <button class="btn-act btn-modify"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#fmRenDev{{ $dev->id }}">
+                                        data-bs-target="#fmRenDev<?php echo e($dev->id); ?>">
                                     ✏️ Rename
                                 </button>
-                                {{-- Unassign from family --}}
-                                <form method="POST" action="{{ route('admin.unassignDevice') }}"
-                                      onsubmit="return confirm('Unassign «{{ addslashes($dev->device_name) }}» from this family?')">
-                                    @csrf
-                                    <input type="hidden" name="device_id" value="{{ $dev->id }}">
+                                
+                                <form method="POST" action="<?php echo e(route('admin.unassignDevice')); ?>"
+                                      onsubmit="return confirm('Unassign «<?php echo e(addslashes($dev->device_name)); ?>» from this family?')">
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="device_id" value="<?php echo e($dev->id); ?>">
                                     <button type="submit" class="btn-act"
                                             style="color:#b45309;border-color:#fde68a;">
                                         ⛓ Unassign
                                     </button>
                                 </form>
-                                {{-- Delete --}}
-                                <form method="POST" action="{{ route('admin.deleteDevice', $dev->id) }}"
-                                      onsubmit="return confirm('Permanently delete «{{ addslashes($dev->device_name) }}»?')">
-                                    @csrf
+                                
+                                <form method="POST" action="<?php echo e(route('admin.deleteDevice', $dev->id)); ?>"
+                                      onsubmit="return confirm('Permanently delete «<?php echo e(addslashes($dev->device_name)); ?>»?')">
+                                    <?php echo csrf_field(); ?>
                                     <button type="submit" class="btn-act btn-danger">🗑 Delete</button>
                                 </form>
                             </div>
                         </div>
-                        @endforeach
-                    @endif
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="modal-footer" style="border-top:1px solid #f1f5f9;padding:12px 22px;">
@@ -410,13 +415,13 @@
     </div>
 </div>
 
-{{-- Rename device modals (one per assigned device) --}}
-@foreach($assigned as $dev)
-<div class="modal fade" id="fmRenDev{{ $dev->id }}" tabindex="-1" aria-hidden="true">
+
+<?php $__currentLoopData = $assigned; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $dev): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<div class="modal fade" id="fmRenDev<?php echo e($dev->id); ?>" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius:14px;overflow:hidden;border:none;">
-            <form method="POST" action="{{ route('admin.updateDevice', $dev->id) }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('admin.updateDevice', $dev->id)); ?>">
+                <?php echo csrf_field(); ?>
                 <div class="modal-header" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:none;padding:13px 20px;">
                     <h5 class="modal-title" style="color:#fff;font-weight:800;font-size:.95rem;">✏️ Rename Device</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -425,10 +430,10 @@
                     <div>
                         <label class="mf-lbl">Device name *</label>
                         <input type="text" name="device_name" class="mf-inp"
-                               required maxlength="255" value="{{ $dev->device_name }}">
+                               required maxlength="255" value="<?php echo e($dev->device_name); ?>">
                     </div>
                     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;font-size:.79rem;color:#64748b;">
-                        Token (read-only): <code>{{ $dev->device_token }}</code>
+                        Token (read-only): <code><?php echo e($dev->device_token); ?></code>
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:1px solid #f1f5f9;padding:11px 20px;gap:8px;">
@@ -439,11 +444,11 @@
         </div>
     </div>
 </div>
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-{{-- Live search --}}
+
 <script>
 (function(){
     var inp=document.getElementById('fmgrSearch');
@@ -458,4 +463,6 @@
 })();
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\IoTBabyCradle\resources\views/admin/families.blade.php ENDPATH**/ ?>

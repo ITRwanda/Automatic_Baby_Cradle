@@ -47,9 +47,10 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'admin'         => \App\Http\Middleware\AdminMiddleware::class,
         'family_parent' => \App\Http\Middleware\FamilyParentMiddleware::class,
-        'caregiver' => \App\Http\Middleware\CaregiverMiddleware::class,
+        'caregiver'     => \App\Http\Middleware\CaregiverMiddleware::class,
+        'family_member' => \App\Http\Middleware\FamilyMemberMiddleware::class,
     ];
 
 
