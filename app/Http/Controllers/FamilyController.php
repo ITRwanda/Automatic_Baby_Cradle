@@ -46,14 +46,11 @@ class FamilyController extends Controller
      */
     public function caregivers()
     {
+        $family  = Auth::user()->family;
+        $members = $family ? $family->members()->with('assignedDevices')->get() : collect();
+        $devices = $family ? $family->devices()->with('caregivers')->get() : collect();
 
-        $family = Auth::user()->family;
-        $members = $family ? $family->members()->get() : collect();
-        $devices = $family ? $family->devices()->get() : collect();
-
-        // Keep variable names consistent with existing Blade(s)
         return view('family.caregivers', compact('members', 'devices'));
-
     }
 
     // Backward-compatible alias (was member listing)
@@ -69,13 +66,12 @@ class FamilyController extends Controller
 
 
     /**
-     * Assign a device to a family caregiver.
+     * Assign a device to a family caregiver (many-to-many).
      */
     public function assignDeviceToCaregiver(Request $request)
     {
-
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'user_id'   => 'required|exists:users,id',
             'device_id' => 'required|exists:devices,id',
         ]);
 
@@ -94,14 +90,10 @@ class FamilyController extends Controller
             return redirect()->back()->with('error', 'Invalid device for this family.');
         }
 
-        // Assign device to this member.
-        $device->family_id = $family->id;
-        $device->user_id = $member->id;
-        $device->save();
+        // syncWithoutDetaching keeps existing assignments intact
+        $device->caregivers()->syncWithoutDetaching([$member->id]);
 
-
-        return redirect()->back()->with('success', 'Device assignment updated.');
-
+        return redirect()->back()->with('success', 'Device assigned to ' . $member->name . ' successfully.');
     }
 
 
@@ -297,13 +289,13 @@ class FamilyController extends Controller
 
 
     /**
-     * Unassign a device from a family member (set devices.user_id = null)
+     * Unassign a specific caregiver from a device (pivot detach).
      */
     public function unassignDeviceFromCaregiver(Request $request)
     {
-
         $request->validate([
             'device_id' => 'required|exists:devices,id',
+            'user_id'   => 'required|exists:users,id',
         ]);
 
         $family = Auth::user()->family;
@@ -316,8 +308,7 @@ class FamilyController extends Controller
             return redirect()->back()->with('error', 'Invalid device for this family.');
         }
 
-        $device->user_id = null;
-        $device->save();
+        $device->caregivers()->detach($request->user_id);
 
         return redirect()->back()->with('success', 'Device unassigned successfully.');
     }

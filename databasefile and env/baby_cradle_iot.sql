@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2026 at 07:29 PM
+-- Generation Time: Jul 17, 2026 at 09:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -66,9 +66,11 @@ CREATE TABLE `devices` (
 --
 
 INSERT INTO `devices` (`id`, `device_name`, `device_token`, `family_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(3, 'Cradle Sensor', 'dd332414-fed9-46c7-9cf4-f5a5c9c1ef17', 1, 3, '2026-06-12 14:01:15', '2026-06-18 07:19:17'),
+(3, 'Cradle Sensor', 'dd332414-fed9-46c7-9cf4-f5a5c9c1ef17', 1, 3, '2026-06-12 14:01:15', '2026-07-15 18:03:17'),
 (4, 'Baby Monitor 1', '708e7e8d-24b0-41c9-957e-3fe11f5275d9', NULL, NULL, '2026-06-12 15:03:15', '2026-06-15 08:29:03'),
-(5, 'Baby Monitor 2', '04a704e4-387a-4ac6-abce-db41b1701144', 2, NULL, '2026-06-12 16:10:05', '2026-06-15 10:11:26');
+(5, 'Baby Monitor 2', '04a704e4-387a-4ac6-abce-db41b1701144', 2, NULL, '2026-06-12 16:10:05', '2026-06-15 10:11:26'),
+(6, 'Bora  device', 'a72e4d26-22d3-4456-ac18-b3997e5132f0', 4, NULL, '2026-07-15 16:03:27', '2026-07-15 18:06:52'),
+(7, 'JD', '2c4fa7d1-4b9a-4de6-a38a-8eae477d789b', NULL, NULL, '2026-07-15 18:05:45', '2026-07-15 18:05:45');
 
 -- --------------------------------------------------------
 
@@ -119,7 +121,92 @@ INSERT INTO `device_activities` (`id`, `device_id`, `event_type`, `payload`, `cr
 (27, 3, 'dht', '{\"temperature\":30.3,\"humidity\":85,\"temp_alert\":false,\"humid_alert\":true}', '2026-07-13 14:06:36', '2026-07-13 14:06:36'),
 (28, 3, 'dht', '{\"temperature\":31.1,\"humidity\":83,\"temp_alert\":false,\"humid_alert\":true}', '2026-07-15 05:37:08', '2026-07-15 05:37:08'),
 (29, 3, 'dht', '{\"temperature\":32,\"humidity\":91,\"temp_alert\":false,\"humid_alert\":true}', '2026-07-15 05:37:24', '2026-07-15 05:37:24'),
-(30, 3, 'dht', '{\"temperature\":31.3,\"humidity\":86,\"temp_alert\":false,\"humid_alert\":true}', '2026-07-15 05:37:40', '2026-07-15 05:37:40');
+(30, 3, 'dht', '{\"temperature\":31.3,\"humidity\":86,\"temp_alert\":false,\"humid_alert\":true}', '2026-07-15 05:37:40', '2026-07-15 05:37:40'),
+(31, 3, 'cry_detected', '{\"sound_level\":440}', '2026-07-17 04:42:38', '2026-07-17 04:42:38'),
+(32, 3, 'cry_detected', '{\"sound_level\":447}', '2026-07-17 04:42:52', '2026-07-17 04:42:52'),
+(33, 3, 'cry_detected', '{\"sound_level\":440}', '2026-07-17 04:43:00', '2026-07-17 04:43:00'),
+(34, 3, 'cry_detected', '{\"sound_level\":448}', '2026-07-17 04:43:07', '2026-07-17 04:43:07'),
+(35, 3, 'cry_detected', '{\"sound_level\":438}', '2026-07-17 04:43:15', '2026-07-17 04:43:15'),
+(36, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:43:25', '2026-07-17 04:43:25'),
+(37, 3, 'cry_detected', '{\"sound_level\":439}', '2026-07-17 04:43:36', '2026-07-17 04:43:36'),
+(38, 3, 'cry_detected', '{\"sound_level\":439}', '2026-07-17 04:43:52', '2026-07-17 04:43:52'),
+(39, 3, 'cry_detected', '{\"sound_level\":447}', '2026-07-17 04:44:00', '2026-07-17 04:44:00'),
+(40, 3, 'cry_detected', '{\"sound_level\":439}', '2026-07-17 04:44:07', '2026-07-17 04:44:07'),
+(41, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:44:17', '2026-07-17 04:44:17'),
+(42, 3, 'cry_detected', '{\"sound_level\":439}', '2026-07-17 04:44:26', '2026-07-17 04:44:26'),
+(43, 3, 'cry_detected', '{\"sound_level\":440}', '2026-07-17 04:44:36', '2026-07-17 04:44:36'),
+(44, 3, 'cry_detected', '{\"sound_level\":439}', '2026-07-17 04:44:46', '2026-07-17 04:44:46'),
+(45, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:50:49', '2026-07-17 04:50:49'),
+(46, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:50:59', '2026-07-17 04:50:59'),
+(47, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:51:10', '2026-07-17 04:51:10'),
+(48, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:51:20', '2026-07-17 04:51:20'),
+(49, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:51:30', '2026-07-17 04:51:30'),
+(50, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:51:40', '2026-07-17 04:51:40'),
+(51, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:51:51', '2026-07-17 04:51:51'),
+(52, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:52:04', '2026-07-17 04:52:04'),
+(53, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:52:11', '2026-07-17 04:52:11'),
+(54, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:52:21', '2026-07-17 04:52:21'),
+(55, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:52:32', '2026-07-17 04:52:32'),
+(56, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:52:42', '2026-07-17 04:52:42'),
+(57, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:52:52', '2026-07-17 04:52:52'),
+(58, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:53:02', '2026-07-17 04:53:02'),
+(59, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:53:13', '2026-07-17 04:53:13'),
+(60, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:53:24', '2026-07-17 04:53:24'),
+(61, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:53:38', '2026-07-17 04:53:38'),
+(62, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:56:43', '2026-07-17 04:56:43'),
+(63, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:57:06', '2026-07-17 04:57:06'),
+(64, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:57:17', '2026-07-17 04:57:17'),
+(65, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:57:30', '2026-07-17 04:57:30'),
+(66, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:57:40', '2026-07-17 04:57:40'),
+(67, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:57:50', '2026-07-17 04:57:50'),
+(68, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:58:03', '2026-07-17 04:58:03'),
+(69, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:58:10', '2026-07-17 04:58:10'),
+(70, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:58:21', '2026-07-17 04:58:21'),
+(71, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:58:34', '2026-07-17 04:58:34'),
+(72, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:58:41', '2026-07-17 04:58:41'),
+(73, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:58:51', '2026-07-17 04:58:51'),
+(74, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:59:01', '2026-07-17 04:59:01'),
+(75, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:59:12', '2026-07-17 04:59:12'),
+(76, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:59:25', '2026-07-17 04:59:25'),
+(77, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:59:33', '2026-07-17 04:59:33'),
+(78, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:59:45', '2026-07-17 04:59:45'),
+(79, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 04:59:57', '2026-07-17 04:59:57'),
+(80, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:00:05', '2026-07-17 05:00:05'),
+(81, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:00:15', '2026-07-17 05:00:15'),
+(82, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:00:28', '2026-07-17 05:00:28'),
+(83, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:00:36', '2026-07-17 05:00:36'),
+(84, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:00:46', '2026-07-17 05:00:46'),
+(85, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:00:59', '2026-07-17 05:00:59'),
+(86, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:01:06', '2026-07-17 05:01:06'),
+(87, 3, 'cry_detected', '{\"sound_level\":447}', '2026-07-17 05:01:21', '2026-07-17 05:01:21'),
+(88, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:01:32', '2026-07-17 05:01:32'),
+(89, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:02:49', '2026-07-17 05:02:49'),
+(90, 3, 'cry_detected', '{\"sound_level\":446}', '2026-07-17 05:03:00', '2026-07-17 05:03:00'),
+(91, 3, 'cry_detected', '{\"sound_level\":447}', '2026-07-17 05:03:10', '2026-07-17 05:03:10'),
+(92, 3, 'cry_detected', '{\"sound_level\":449}', '2026-07-17 05:16:06', '2026-07-17 05:16:06'),
+(93, 3, 'cry_detected', '{\"sound_level\":450}', '2026-07-17 05:16:46', '2026-07-17 05:16:46');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device_user`
+--
+
+CREATE TABLE `device_user` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `device_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `device_user`
+--
+
+INSERT INTO `device_user` (`id`, `device_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 3, 3, '2026-07-17 04:40:03', '2026-07-17 04:40:03'),
+(2, 3, 2, '2026-07-17 05:12:43', '2026-07-17 05:12:43');
 
 -- --------------------------------------------------------
 
@@ -157,7 +244,8 @@ CREATE TABLE `families` (
 
 INSERT INTO `families` (`id`, `family_name`, `parent_id`, `created_at`, `updated_at`) VALUES
 (1, 'Twagirimukiza Family', 2, '2026-06-11 07:47:11', '2026-06-11 07:47:11'),
-(2, 'Test Family', 10, '2026-06-15 08:55:29', '2026-06-15 08:55:29');
+(2, 'Test Family', 10, '2026-06-15 08:55:29', '2026-06-15 08:55:29'),
+(4, 'VAVA Family', 12, '2026-07-15 17:12:35', '2026-07-15 17:12:35');
 
 -- --------------------------------------------------------
 
@@ -188,7 +276,133 @@ INSERT INTO `incident_notifications` (`id`, `user_id`, `device_activity_id`, `de
 (3, 2, 29, 3, 'dht', '🌡️ Environment Alert', 'Device \"Cradle Sensor\" at 07:37, 15 Jul 2026: humidity 91% is out of safe range. Please adjust the room environment.', NULL, '2026-07-15 05:37:24', '2026-07-15 05:37:24'),
 (4, 3, 29, 3, 'dht', '🌡️ Environment Alert', 'Device \"Cradle Sensor\" at 07:37, 15 Jul 2026: humidity 91% is out of safe range. Please adjust the room environment.', NULL, '2026-07-15 05:37:31', '2026-07-15 05:37:31'),
 (5, 2, 30, 3, 'dht', '🌡️ Environment Alert', 'Device \"Cradle Sensor\" at 07:37, 15 Jul 2026: humidity 86% is out of safe range. Please adjust the room environment.', NULL, '2026-07-15 05:37:40', '2026-07-15 05:37:40'),
-(6, 3, 30, 3, 'dht', '🌡️ Environment Alert', 'Device \"Cradle Sensor\" at 07:37, 15 Jul 2026: humidity 86% is out of safe range. Please adjust the room environment.', NULL, '2026-07-15 05:37:46', '2026-07-15 05:37:46');
+(6, 3, 30, 3, 'dht', '🌡️ Environment Alert', 'Device \"Cradle Sensor\" at 07:37, 15 Jul 2026: humidity 86% is out of safe range. Please adjust the room environment.', NULL, '2026-07-15 05:37:46', '2026-07-15 05:37:46'),
+(7, 2, 31, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:42, 17 Jul 2026. Sound level: 440. Please check on the baby immediately.', NULL, '2026-07-17 04:42:38', '2026-07-17 04:42:38'),
+(8, 3, 31, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:42, 17 Jul 2026. Sound level: 440. Please check on the baby immediately.', NULL, '2026-07-17 04:42:49', '2026-07-17 04:42:49'),
+(9, 2, 32, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:42, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 04:42:52', '2026-07-17 04:42:52'),
+(10, 3, 32, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:42, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 04:42:57', '2026-07-17 04:42:57'),
+(11, 2, 33, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 440. Please check on the baby immediately.', NULL, '2026-07-17 04:43:00', '2026-07-17 04:43:00'),
+(12, 3, 33, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 440. Please check on the baby immediately.', NULL, '2026-07-17 04:43:04', '2026-07-17 04:43:04'),
+(13, 2, 34, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 448. Please check on the baby immediately.', NULL, '2026-07-17 04:43:07', '2026-07-17 04:43:07'),
+(14, 3, 34, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 448. Please check on the baby immediately.', NULL, '2026-07-17 04:43:12', '2026-07-17 04:43:12'),
+(15, 2, 35, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 438. Please check on the baby immediately.', NULL, '2026-07-17 04:43:15', '2026-07-17 04:43:15'),
+(16, 3, 35, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 438. Please check on the baby immediately.', NULL, '2026-07-17 04:43:21', '2026-07-17 04:43:21'),
+(17, 2, 36, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:43:25', '2026-07-17 04:43:25'),
+(18, 3, 36, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:43:30', '2026-07-17 04:43:30'),
+(19, 2, 37, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:43:36', '2026-07-17 04:43:36'),
+(20, 3, 37, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:43:40', '2026-07-17 04:43:40'),
+(21, 2, 38, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:43:52', '2026-07-17 04:43:52'),
+(22, 3, 38, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:43, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:43:57', '2026-07-17 04:43:57'),
+(23, 2, 39, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 04:44:00', '2026-07-17 04:44:00'),
+(24, 3, 39, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 04:44:05', '2026-07-17 04:44:05'),
+(25, 2, 40, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:44:07', '2026-07-17 04:44:07'),
+(26, 3, 40, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:44:12', '2026-07-17 04:44:12'),
+(27, 2, 41, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:44:17', '2026-07-17 04:44:17'),
+(28, 3, 41, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:44:22', '2026-07-17 04:44:22'),
+(29, 2, 42, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:44:26', '2026-07-17 04:44:26'),
+(30, 3, 42, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:44:31', '2026-07-17 04:44:31'),
+(31, 2, 43, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 440. Please check on the baby immediately.', NULL, '2026-07-17 04:44:36', '2026-07-17 04:44:36'),
+(32, 3, 43, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 440. Please check on the baby immediately.', NULL, '2026-07-17 04:44:41', '2026-07-17 04:44:41'),
+(33, 2, 44, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:44:46', '2026-07-17 04:44:46'),
+(34, 3, 44, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:44, 17 Jul 2026. Sound level: 439. Please check on the baby immediately.', NULL, '2026-07-17 04:44:51', '2026-07-17 04:44:51'),
+(35, 2, 45, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:50, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:50:49', '2026-07-17 04:50:49'),
+(36, 3, 45, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:50, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:50:55', '2026-07-17 04:50:55'),
+(37, 2, 46, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:50, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:50:59', '2026-07-17 04:50:59'),
+(38, 3, 46, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:50, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:05', '2026-07-17 04:51:05'),
+(39, 2, 47, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:10', '2026-07-17 04:51:10'),
+(40, 3, 47, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:15', '2026-07-17 04:51:15'),
+(41, 2, 48, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:20', '2026-07-17 04:51:20'),
+(42, 3, 48, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:25', '2026-07-17 04:51:25'),
+(43, 2, 49, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:30', '2026-07-17 04:51:30'),
+(44, 3, 49, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:35', '2026-07-17 04:51:35'),
+(45, 2, 50, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:40', '2026-07-17 04:51:40'),
+(46, 3, 50, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:45', '2026-07-17 04:51:45'),
+(47, 2, 51, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:51', '2026-07-17 04:51:51'),
+(48, 3, 51, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:51, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:51:55', '2026-07-17 04:51:55'),
+(49, 2, 52, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:04', '2026-07-17 04:52:04'),
+(50, 3, 52, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:08', '2026-07-17 04:52:08'),
+(51, 2, 53, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:11', '2026-07-17 04:52:11'),
+(52, 3, 53, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:16', '2026-07-17 04:52:16'),
+(53, 2, 54, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:21', '2026-07-17 04:52:21'),
+(54, 3, 54, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:26', '2026-07-17 04:52:26'),
+(55, 2, 55, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:32', '2026-07-17 04:52:32'),
+(56, 3, 55, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:37', '2026-07-17 04:52:37'),
+(57, 2, 56, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:42', '2026-07-17 04:52:42'),
+(58, 3, 56, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:47', '2026-07-17 04:52:47'),
+(59, 2, 57, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:52', '2026-07-17 04:52:52'),
+(60, 3, 57, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:52, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:52:57', '2026-07-17 04:52:57'),
+(61, 2, 58, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:02', '2026-07-17 04:53:02'),
+(62, 3, 58, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:07', '2026-07-17 04:53:07'),
+(63, 2, 59, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:13', '2026-07-17 04:53:13'),
+(64, 3, 59, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:19', '2026-07-17 04:53:19'),
+(65, 2, 60, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:24', '2026-07-17 04:53:24'),
+(66, 3, 60, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:29', '2026-07-17 04:53:29'),
+(67, 2, 61, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:38', '2026-07-17 04:53:38'),
+(68, 3, 61, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:53, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:53:43', '2026-07-17 04:53:43'),
+(69, 2, 62, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:56, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:56:43', '2026-07-17 04:56:43'),
+(70, 3, 62, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:56, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:56:48', '2026-07-17 04:56:48'),
+(71, 2, 63, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:06', '2026-07-17 04:57:06'),
+(72, 3, 63, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:10', '2026-07-17 04:57:10'),
+(73, 2, 64, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:18', '2026-07-17 04:57:18'),
+(74, 3, 64, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:22', '2026-07-17 04:57:22'),
+(75, 2, 65, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:30', '2026-07-17 04:57:30'),
+(76, 3, 65, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:34', '2026-07-17 04:57:34'),
+(77, 2, 66, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:40', '2026-07-17 04:57:40'),
+(78, 3, 66, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:44', '2026-07-17 04:57:44'),
+(79, 2, 67, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:50', '2026-07-17 04:57:50'),
+(80, 3, 67, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:57, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:57:55', '2026-07-17 04:57:55'),
+(81, 2, 68, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:03', '2026-07-17 04:58:03'),
+(82, 3, 68, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:08', '2026-07-17 04:58:08'),
+(83, 2, 69, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:10', '2026-07-17 04:58:10'),
+(84, 3, 69, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:15', '2026-07-17 04:58:15'),
+(85, 2, 70, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:21', '2026-07-17 04:58:21'),
+(86, 3, 70, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:26', '2026-07-17 04:58:26'),
+(87, 2, 71, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:34', '2026-07-17 04:58:34'),
+(88, 3, 71, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:38', '2026-07-17 04:58:38'),
+(89, 2, 72, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:41', '2026-07-17 04:58:41'),
+(90, 3, 72, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:46', '2026-07-17 04:58:46'),
+(91, 2, 73, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:51', '2026-07-17 04:58:51'),
+(92, 3, 73, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:58, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:58:56', '2026-07-17 04:58:56'),
+(93, 2, 74, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:01', '2026-07-17 04:59:01'),
+(94, 3, 74, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:06', '2026-07-17 04:59:06'),
+(95, 2, 75, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:12', '2026-07-17 04:59:12'),
+(96, 3, 75, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:16', '2026-07-17 04:59:16'),
+(97, 2, 76, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:25', '2026-07-17 04:59:25'),
+(98, 3, 76, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:30', '2026-07-17 04:59:30'),
+(99, 2, 77, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:33', '2026-07-17 04:59:33'),
+(100, 3, 77, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:37', '2026-07-17 04:59:37'),
+(101, 2, 78, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:45', '2026-07-17 04:59:45'),
+(102, 3, 78, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:49', '2026-07-17 04:59:49'),
+(103, 2, 79, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 04:59:57', '2026-07-17 04:59:57'),
+(104, 3, 79, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 06:59, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:02', '2026-07-17 05:00:02'),
+(105, 2, 80, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:05', '2026-07-17 05:00:05'),
+(106, 3, 80, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:10', '2026-07-17 05:00:10'),
+(107, 2, 81, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:15', '2026-07-17 05:00:15'),
+(108, 3, 81, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:20', '2026-07-17 05:00:20'),
+(109, 2, 82, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:28', '2026-07-17 05:00:28'),
+(110, 3, 82, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:33', '2026-07-17 05:00:33'),
+(111, 2, 83, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:36', '2026-07-17 05:00:36'),
+(112, 3, 83, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:40', '2026-07-17 05:00:40'),
+(113, 2, 84, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:46', '2026-07-17 05:00:46'),
+(114, 3, 84, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:51', '2026-07-17 05:00:51'),
+(115, 2, 85, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:00:59', '2026-07-17 05:00:59'),
+(116, 3, 85, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:00, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:01:04', '2026-07-17 05:01:04'),
+(117, 2, 86, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:01, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:01:06', '2026-07-17 05:01:06'),
+(118, 3, 86, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:01, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:01:11', '2026-07-17 05:01:11'),
+(119, 2, 87, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:01, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 05:01:21', '2026-07-17 05:01:21'),
+(120, 3, 87, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:01, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 05:01:26', '2026-07-17 05:01:26'),
+(121, 2, 88, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:01, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:01:32', '2026-07-17 05:01:32'),
+(122, 3, 88, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:01, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:01:36', '2026-07-17 05:01:36'),
+(123, 2, 89, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:02, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:02:49', '2026-07-17 05:02:49'),
+(124, 3, 89, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:02, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:02:54', '2026-07-17 05:02:54'),
+(125, 2, 90, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:03, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:03:00', '2026-07-17 05:03:00'),
+(126, 3, 90, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:03, 17 Jul 2026. Sound level: 446. Please check on the baby immediately.', NULL, '2026-07-17 05:03:04', '2026-07-17 05:03:04'),
+(127, 2, 91, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:03, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 05:03:10', '2026-07-17 05:03:10'),
+(128, 3, 91, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:03, 17 Jul 2026. Sound level: 447. Please check on the baby immediately.', NULL, '2026-07-17 05:03:15', '2026-07-17 05:03:15'),
+(129, 2, 92, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:16, 17 Jul 2026. Sound level: 449. Please check on the baby immediately.', NULL, '2026-07-17 05:16:06', '2026-07-17 05:16:06'),
+(130, 3, 92, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:16, 17 Jul 2026. Sound level: 449. Please check on the baby immediately.', NULL, '2026-07-17 05:16:11', '2026-07-17 05:16:11'),
+(131, 2, 93, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:16, 17 Jul 2026. Sound level: 450. Please check on the baby immediately.', NULL, '2026-07-17 05:16:46', '2026-07-17 05:16:46'),
+(132, 3, 93, 3, 'cry_detected', '🔔 Baby Cry Detected', 'Your baby was detected crying on device \"Cradle Sensor\" at 07:16, 17 Jul 2026. Sound level: 450. Please check on the baby immediately.', NULL, '2026-07-17 05:16:51', '2026-07-17 05:16:51');
 
 -- --------------------------------------------------------
 
@@ -253,7 +467,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2026_06_12_000000_add_fields_to_device_activities', 3),
 (10, '2026_06_15_000000_add_user_id_to_devices_table', 4),
 (11, '2026_06_12_172531_create_device_activities_table', 5),
-(12, '2026_07_15_051516_create_incident_notifications_table', 5);
+(12, '2026_07_15_051516_create_incident_notifications_table', 5),
+(13, '2026_07_17_000001_create_device_user_pivot_table', 6);
 
 -- --------------------------------------------------------
 
@@ -310,13 +525,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('BCkMlseAlgerRcjZ3LiKgncUiwWQNPbcRXEYnjyO', NULL, '192.168.192.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTjU3WXF2TmhHanh1NXQwYW1VcGgweDhxOWhnMFNXd0RtR3VXdWJ4MSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xOTIuMTY4LjE5Mi4xOjgwMDAvbG9naW4iO3M6NToicm91dGUiO3M6NToibG9naW4iO319', 1783807863),
-('BYYqB4rqzm1kwBrS8NsRD3xMTOL5RTX2JyPE2m7D', NULL, '172.23.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZDFKMDMzWXlOYm1VVm96UHZtZHBlRWNlZ1RsWVhsZ3l5NDdxcGxjRSI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mjg6Imh0dHA6Ly8xNzIuMjMuMC4xOjgwMDAvbG9naW4iO3M6NToicm91dGUiO3M6NToibG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1783884359),
-('GnV22zVIni0wetByfE2uTDVkDPeMrrRT5sFAwpiR', 3, '172.29.208.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicEFpeGVXQWRERXE5akVBSFdXYXdJYU1LUm5HSFhWdTJxMkZHSm1XZCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly8xNzIuMjkuMjA4LjE6ODAwMC9jYXJlZ2l2ZXIvZGFzaGJvYXJkIjtzOjU6InJvdXRlIjtzOjE5OiJjYXJlZ2l2ZXIuZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mzt9', 1784099690),
-('HNU3iCmYoaBEnsqwbNM2Q3vmyB5q05sLhnhXIis1', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiYlF1Yzk3VVFPUEZZRHJUdVB2RndSeTRSYnpseGR6NHltRlJxeEZhdCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9jYXJlZ2l2ZXIvcmVwb3J0cyI7czo1OiJyb3V0ZSI7czoxNzoiY2FyZWdpdmVyLnJlcG9ydHMiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO30=', 1784099628),
-('k8OeDdrnup2P3X6tHXU7NCyBAeTWn1ekLcQKV3h7', 3, '192.168.201.236', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiWGROWTZSWjR1ZGEyTG9nRzl0NVZIR3dBWXVTQWFvdmpYcms2TjRTSyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDU6Imh0dHA6Ly8xOTIuMTY4LjIwMS4yMzY6ODAwMC9jYXJlZ2l2ZXIvcmVwb3J0cyI7czo1OiJyb3V0ZSI7czoxNzoiY2FyZWdpdmVyLnJlcG9ydHMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO30=', 1784101099),
-('KdXISwCCqe1qUeHyFOUIwqbRTszoTVM4HxycJfca', NULL, '192.168.1.87', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTldzbTRaOWVOS3lFQVZ4VGhCV1ZPRHB6NUMxajFTRmNvOEp6eHRpdyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzA6Imh0dHA6Ly8xOTIuMTY4LjEuODc6ODAwMC9sb2dpbiI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fX0=', 1783964620),
-('Z4DxF7Kayqf1znJnZHoZc9dLGrW4WWb0wfCJvf4b', NULL, '192.168.191.236', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNlFObGpRZG9Ib2NkaWhEVUxPdlp0MDVqcEhhM0p6NnBTdTNTTDFRMCI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xOTIuMTY4LjE5MS4yMzY6ODAwMC9sb2dpbiI7czo1OiJyb3V0ZSI7czo1OiJsb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1783885794);
+('Oe3ecawcbABXNKHACjVn6nlQulnmSJ6fwY4pGRaa', 2, '192.168.137.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiTDdHOU1HcmhWWkg4UEp4V3YyUlZZV3VWUzR0dFhFcWZPRmQ3NEpIQSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xOTIuMTY4LjEzNy4xOjgwMDAvZmFtaWx5L3JlcG9ydHMiO3M6NToicm91dGUiO3M6MTQ6ImZhbWlseS5yZXBvcnRzIjt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1784272628);
 
 -- --------------------------------------------------------
 
@@ -346,8 +555,9 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `ro
 (2, 'Jean Parent', 'itprofessional680@gmail.com', NULL, '$2y$12$.E3YhncApdTrMm8CuIRL3uKercY7tfSomwbLtwifuOwmZpEenEV1K', 2, NULL, '2026-06-11 07:47:11', '2026-07-02 07:49:01', 1),
 (3, 'Dukuze VAVA', 'valentineduk@gmail.com', NULL, '$2y$12$CaDpkRVAxC8WoYmAeIT3Gux3p4beec5R/vE38YCKZrFTZ/7wC75ZG', 3, NULL, '2026-06-11 07:47:11', '2026-07-02 06:58:20', 1),
 (4, 'Member Two', 'member2@iot.com', NULL, '$2y$12$zCskN13K9ECFEkXmSKSY8eBTM1rLLgSWTf3SaiHpZREGV6v/YL49y', 3, NULL, '2026-06-11 07:47:12', '2026-06-11 07:47:12', 1),
-(5, 'Member Three', 'member3@iot.com', NULL, '$2y$12$lb7wZES7EztWc44ld.2YwuAicoESDf7oX4c2cRe1wYOVfTGFKgpLC', 3, NULL, '2026-06-11 07:47:12', '2026-06-11 07:47:12', 1),
-(10, 'Testfy', 'testfy@iot.com', NULL, '$2y$12$hCpxZddH8SslSXIczenUW.N7LjG8p0d/miN1s9saXzWZHGav9idBu', 2, NULL, '2026-06-15 08:55:29', '2026-06-15 08:55:29', NULL);
+(10, 'Testfy', 'testfy@iot.com', NULL, '$2y$12$hCpxZddH8SslSXIczenUW.N7LjG8p0d/miN1s9saXzWZHGav9idBu', 2, NULL, '2026-06-15 08:55:29', '2026-06-15 08:55:29', NULL),
+(12, 'Bora', 'bora@iot.com', NULL, '$2y$12$u5x7rYzY7wekLanW8qKwjuDOxZELTpXln7fNQYxWf/MmzkXTQzB2e', 2, NULL, '2026-07-15 17:12:35', '2026-07-15 17:12:35', NULL),
+(13, 'jane', 'janed@someotheraddress.org', NULL, '$2y$12$EPenebF.w/QQermnCQNL/OtWV6o3Ll1BBRb0l8M3LbGN/jml8Qsty', 3, NULL, '2026-07-15 17:48:34', '2026-07-15 17:48:34', 1);
 
 --
 -- Indexes for dumped tables
@@ -383,6 +593,14 @@ ALTER TABLE `device_activities`
   ADD PRIMARY KEY (`id`),
   ADD KEY `device_activities_device_id_index` (`device_id`),
   ADD KEY `device_activities_event_type_index` (`event_type`);
+
+--
+-- Indexes for table `device_user`
+--
+ALTER TABLE `device_user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `device_user_device_id_user_id_unique` (`device_id`,`user_id`),
+  ADD KEY `device_user_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -464,13 +682,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `devices`
 --
 ALTER TABLE `devices`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `device_activities`
 --
 ALTER TABLE `device_activities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+
+--
+-- AUTO_INCREMENT for table `device_user`
+--
+ALTER TABLE `device_user`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -482,13 +706,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `families`
 --
 ALTER TABLE `families`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `incident_notifications`
 --
 ALTER TABLE `incident_notifications`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -500,7 +724,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -512,7 +736,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
@@ -530,6 +754,13 @@ ALTER TABLE `devices`
 --
 ALTER TABLE `device_activities`
   ADD CONSTRAINT `device_activities_device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `device_user`
+--
+ALTER TABLE `device_user`
+  ADD CONSTRAINT `device_user_device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `device_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `families`
