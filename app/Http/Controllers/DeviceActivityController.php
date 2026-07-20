@@ -33,7 +33,7 @@ class DeviceActivityController extends Controller
 
         // ── 1. Resolve device ────────────────────────────────
         $device = Device::where('device_token', $validated['device_token'])
-                        ->with(['family.parent', 'user'])  // eager-load now, once
+                        ->with(['family.parent', 'caregivers'])  // eager-load now, once
                         ->first();
 
         if (!$device) {
@@ -124,10 +124,13 @@ class DeviceActivityController extends Controller
     private function notifyRecipients(Device $device, DeviceActivity $activity, string $event): void
     {
         $familyParent = $device->family?->parent;
-        $caregiver    = $device->user;          // device.user_id = assigned caregiver
 
-        // Collect unique recipients
-        $recipients = collect([$familyParent, $caregiver])
+        // All caregivers assigned to this device via many-to-many pivot
+        $caregivers = $device->caregivers()->get();
+
+        // Collect unique recipients: family parent + all assigned caregivers
+        $recipients = collect([$familyParent])
+            ->merge($caregivers)
             ->filter(fn($u) => $u !== null)
             ->unique('id')
             ->values();

@@ -14,16 +14,16 @@ class CaregiverController extends Controller
 {
     /**
      * Caregiver dashboard.
+     * Shows all devices assigned to this caregiver via the pivot table.
      */
     public function dashboard()
     {
         $caregiver = Auth::user();
 
-        $devices = Device::query()
-            ->where('user_id', $caregiver->id)
-            ->get();
+        // Devices assigned via many-to-many pivot
+        $devices = $caregiver->assignedDevices()->with('family')->get();
 
-        // Live in-app notifications
+        // In-app notifications
         $notifications = IncidentNotification::where('user_id', $caregiver->id)
             ->with('device')
             ->orderByDesc('created_at')
@@ -38,12 +38,11 @@ class CaregiverController extends Controller
     }
 
     /**
-     * Caregiver reports.
+     * Caregiver reports — scoped to devices assigned via pivot.
      */
     public function reports(Request $request)
     {
         $activities = $this->caregiverReportsData($request);
-
         return view('member.reports', compact('activities'));
     }
 
@@ -51,11 +50,12 @@ class CaregiverController extends Controller
     {
         $caregiver = Auth::user();
 
-        $query = DeviceActivity::query()->with(['device.family']);
+        // Get IDs of devices assigned to this caregiver via pivot
+        $deviceIds = $caregiver->assignedDevices()->pluck('devices.id');
 
-        $query->whereHas('device', function ($q) use ($caregiver) {
-            $q->where('user_id', $caregiver->id);
-        });
+        $query = DeviceActivity::query()
+            ->with(['device.family', 'device.caregivers'])
+            ->whereIn('device_id', $deviceIds);
 
         $q = trim((string) $request->input('q'));
         if ($q !== '') {
@@ -79,7 +79,7 @@ class CaregiverController extends Controller
     }
 
     /**
-     * Caregiver/member report export CSV
+     * Export CSV
      */
     public function exportCaregiverReportsCsv(Request $request)
     {
@@ -93,9 +93,7 @@ class CaregiverController extends Controller
         $stream = function () use ($activities) {
             $out = fopen('php://output', 'w');
             fprintf($out, "\xEF\xBB\xBF");
-
             fputcsv($out, ['Time', 'Device Name', 'Device Token', 'Family', 'Event Type', 'Payload']);
-
             foreach ($activities as $a) {
                 fputcsv($out, [
                     $a->created_at?->format('Y-m-d H:i:s'),
@@ -106,7 +104,6 @@ class CaregiverController extends Controller
                     $a->payload ?? '',
                 ]);
             }
-
             fclose($out);
         };
 
@@ -114,7 +111,7 @@ class CaregiverController extends Controller
     }
 
     /**
-     * Caregiver/member report export PDF (print-view HTML)
+     * Export PDF
      */
     public function exportCaregiverReportsPdf(Request $request)
     {
@@ -132,7 +129,7 @@ class CaregiverController extends Controller
     }
 
     /**
-     * Notifications page — paginated, with unread count.
+     * Notifications page — paginated.
      */
     public function notifications()
     {
@@ -152,11 +149,11 @@ class CaregiverController extends Controller
 
     public function assignDevice(Request $request)
     {
-        return redirect()->back()->with('error', 'Unauthorized action for caregiver.');
+        return redirect()->back()->with('error', 'Device assignment is managed by the family parent.');
     }
 
     public function unassignDevice(Request $request)
     {
-        return redirect()->back()->with('error', 'Unauthorized action for caregiver.');
+        return redirect()->back()->with('error', 'Device assignment is managed by the family parent.');
     }
 }

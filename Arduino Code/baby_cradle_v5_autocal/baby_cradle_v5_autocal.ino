@@ -2,12 +2,12 @@
  * IoT Baby Cradle — ESP8266 NodeMCU
  * Cry detection (sound sensor) + DHT11 monitoring + Laravel API
  *
- * v4 — SAFE PINS + DHT READ-INTERVAL FIX
- *  - Moved all digital I/O off boot-strapping pins (D0, D3, D4, D8)
- *  - DHT11 now reads on its own 2.5s interval, decoupled from the
- *    500ms main loop delay (fixes NaN read failures)
- *  - Still incident-only posting: nothing sent to the server unless
- *    a cry is detected or a DHT threshold is exceeded
+ * v5 — AUTO-CALIBRATED SOUND THRESHOLD
+ *  - Fixes constant "446" false readings by measuring the real
+ *    silence baseline at boot instead of using a guessed fixed number
+ *  - Cry threshold = baseline + margin (adaptive to YOUR sensor/room)
+ *  - Clear serial logging when it goes back to "listening" after a cry
+ *  - Everything else identical to v4 (safe pins, DHT interval fix)
  */
 
 #include <ESP8266WiFi.h>
@@ -16,8 +16,8 @@
 #include <DHT.h>
 
 // ─── WiFi credentials ───────────────────────────────
-const char* WIFI_SSID     = "ITProfessional";
-const char* WIFI_PASSWORD = "ITPro@250";
+const char* WIFI_SSID     = "VAVA";
+const char* WIFI_PASSWORD = "bora@250";
 
 // ─── Server settings ────────────────────────────────
 const char* SERVER_HOST   = "http://192.168.137.1:8000";
@@ -33,8 +33,17 @@ const char* DEVICE_TOKEN  = "dd332414-fed9-46c7-9cf4-f5a5c9c1ef17";
 #define LED_YELLOW_PIN    D6   // GPIO12
 #define LED_GREEN_PIN     D7   // GPIO13
 
-// ─── Thresholds ─────────────────────────────────────
-const int   CRY_THRESHOLD = 446;
+// ─── Calibration settings ───────────────────────────
+const int   CAL_SAMPLES   = 200;   // number of readings taken at boot
+const int   CAL_DELAY_MS  = 10;    // spacing between samples (~2s total)
+const int   CRY_MARGIN    = 2;   // how far above baseline counts as a cry
+                                    // increase if still too sensitive,
+                                    // decrease if it misses real cries
+
+int   soundBaseline  = 0;          // measured "silence" level
+int   CRY_THRESHOLD  = 0;          // computed = baseline + CRY_MARGIN
+
+// ─── DHT thresholds ─────────────────────────────────
 const float TEMP_HIGH     = 35.0;
 const float TEMP_LOW      = 16.0;
 const float HUMID_HIGH    = 80.0;
@@ -43,9 +52,9 @@ const float HUMID_LOW     = 30.0;
 // ─── Timing constants (ms) ──────────────────────────
 const unsigned long CRY_COOLDOWN       = 10000;
 const unsigned long DHT_COOLDOWN       = 15000;
-const unsigned long DHT_READ_INTERVAL  = 2500;  // DHT11 needs >=1-2s between reads
-const unsigned long ALERT_DURATION     = 3000;  // cry alert (red)
-const unsigned long WARNING_DURATION   = 500;   // DHT warning (yellow)
+const unsigned long DHT_READ_INTERVAL  = 2500;
+const unsigned long ALERT_DURATION     = 3000;
+const unsigned long WARNING_DURATION   = 500;
 const unsigned long SOUND_LOG_INTERVAL = 2000;
 
 // ─── Globals ────────────────────────────────────────
@@ -56,11 +65,11 @@ unsigned long lastDhtAlert = 0;
 unsigned long lastSoundLog = 0;
 unsigned long lastDhtRead  = 0;
 
-// Cache the most recent DHT reading so it's available between read intervals
 float lastTemp = NAN;
 float lastHum  = NAN;
 
 bool greenLedState = false;
+bool wasListening  = true;   // tracks state transitions for logging
 
 enum IndicatorType { IND_NONE, IND_CRY, IND_DHT };
 IndicatorType indicatorType   = IND_NONE;
@@ -84,7 +93,7 @@ void blinkGreen() {
 }
 
 void startIndicator(IndicatorType type, unsigned long durationMs) {
-  if (indicatorType == IND_CRY && type == IND_DHT) return; // cry wins
+  if (indicatorType == IND_CRY && type == IND_DHT) return;
 
   indicatorType   = type;
   indicatorEndsAt = millis() + durationMs;
@@ -106,8 +115,6 @@ void updateIndicator(unsigned long now) {
   }
 }
 
-// Reads DHT only if DHT_READ_INTERVAL has elapsed; updates lastTemp/lastHum.
-// Returns true if a fresh, valid reading was taken this call.
 bool maybeReadDHT(unsigned long now, float& temp, float& hum) {
   if (now - lastDhtRead < DHT_READ_INTERVAL) return false;
   lastDhtRead = now;
@@ -199,12 +206,37 @@ void connectWiFi() {
   }
 }
 
+// Measures the real "silence" noise floor of the sound sensor and
+// sets CRY_THRESHOLD relative to it. Keep the room quiet during boot.
+void calibrateSound() {
+  Serial.println(F("[Calibrate] Measuring silence baseline... keep quiet."));
+
+  long sum = 0;
+  int  minVal = 4095, maxVal = 0;
+
+  for (int i = 0; i < CAL_SAMPLES; i++) {
+    int v = analogRead(SOUND_ANALOG_PIN);
+    sum += v;
+    if (v < minVal) minVal = v;
+    if (v > maxVal) maxVal = v;
+    delay(CAL_DELAY_MS);
+  }
+
+  soundBaseline = sum / CAL_SAMPLES;
+  CRY_THRESHOLD = soundBaseline + CRY_MARGIN;
+
+  Serial.printf("[Calibrate] Baseline avg=%d  min=%d  max=%d\n",
+                soundBaseline, minVal, maxVal);
+  Serial.printf("[Calibrate] Cry threshold set to %d (baseline + %d)\n",
+                CRY_THRESHOLD, CRY_MARGIN);
+}
+
 // ─── Setup ──────────────────────────────────────────
 void setup() {
   Serial.begin(9600);
   delay(200);
   Serial.println();
-  Serial.println(F(">>> RUNNING VERSION 4 -- SAFE PINS + DHT FIX <<<"));
+  Serial.println(F(">>> RUNNING VERSION 5 -- AUTO-CALIBRATED SOUND <<<"));
 
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(LED_RED_PIN, OUTPUT);
@@ -212,9 +244,10 @@ void setup() {
   pinMode(LED_GREEN_PIN, OUTPUT);
 
   stopOutputs();
+  calibrateSound();     // <-- establishes real baseline before sensing starts
   dht.begin();
   connectWiFi();
-  Serial.println(F("[IoTBabyCradle] Ready."));
+  Serial.println(F("[IoTBabyCradle] Ready. Listening..."));
 }
 
 // ─── Main Loop ──────────────────────────────────────
@@ -227,11 +260,14 @@ void loop() {
 
   if (now - lastSoundLog >= SOUND_LOG_INTERVAL) {
     lastSoundLog = now;
-    Serial.printf("[Sound] Level: %d\n", soundLevel);
+    Serial.printf("[Sound] Level: %d  (threshold: %d)\n", soundLevel, CRY_THRESHOLD);
   }
 
-  if (soundLevel >= CRY_THRESHOLD && (now - lastCryAlert >= CRY_COOLDOWN)) {
+  bool inCooldown = (now - lastCryAlert < CRY_COOLDOWN);
+
+  if (soundLevel >= CRY_THRESHOLD && !inCooldown) {
     lastCryAlert = now;
+    wasListening = false;
     Serial.println(F("[INCIDENT] Cry detected!"));
 
     StaticJsonDocument<64> doc;
@@ -240,6 +276,12 @@ void loop() {
     serializeJson(doc, payload);
     if (postActivity("cry_detected", payload)) blinkGreen();
     startIndicator(IND_CRY, ALERT_DURATION);
+  }
+
+  // Announce once when cooldown ends and it's back to normal sensing
+  if (!wasListening && !inCooldown) {
+    wasListening = true;
+    Serial.println(F("[Sound] Reset — back to listening."));
   }
 
   // ── DHT11 sensor — temperature & humidity (rate-limited internally) ──

@@ -36,8 +36,18 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function family() {
+    public function family()
+    {
         return $this->belongsTo(Family::class);
+    }
+
+    /**
+     * Devices assigned to this caregiver (many-to-many via device_user pivot).
+     */
+    public function assignedDevices()
+    {
+        return $this->belongsToMany(Device::class, 'device_user')
+                    ->withTimestamps();
     }
 
     /**
